@@ -18,7 +18,12 @@
                         <span class="time"><i class="far fa-clock"></i>{{$activity->created_at->format('H:m:s')}}</span>
 
                         <h3 class="timeline-header border-0"><a
-                                href="#">{{$activity->causer->full_name}}</a> {{$activity->description}}
+                                href="#">
+                                @if($activity->causer)
+                                    {{$activity->causer->name_for_log}}
+                                @endif
+
+                            </a> {{$activity->description}}
                         </h3>
                         <div>
                              <pre  data-json="{{json_encode($activity->changes)}}"></pre>
