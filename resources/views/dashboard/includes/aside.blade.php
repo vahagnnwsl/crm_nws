@@ -49,7 +49,7 @@
                     </li>
                 @endcan
 
-                @can('view_users_list')
+                @can('view_user_and_users_list')
                 <li class="nav-item">
                     <a href="{{route('users.index')}}"
                        class="nav-link {{request()->is('dashboard/users*') ?'active':''}}">
@@ -58,6 +58,14 @@
                     </a>
                 </li>
                 @endcan
+
+                <li class="nav-item">
+                    <a href="{{route('orders.index')}}"
+                       class="nav-link {{request()->is('dashboard/orders*') ?'active':''}}">
+                        <i class="fa fa-address-card nav-icon"></i>
+                        <p>Orders</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

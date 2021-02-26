@@ -24,24 +24,17 @@ class PermissionSeeder extends Seeder
             'name' => 'view_roles_list'
         ]);
 
+
         Permission::create([
-            'name' => 'give_permission_to_role'
+            'name' => 'roles_edit_delete_update'
         ]);
 
         Permission::create([
-            'name' => 'view_users_list'
+            'name' => 'view_user_and_users_list'
         ]);
 
         Permission::create([
-            'name' => 'view_user'
-        ]);
-
-        Permission::create([
-            'name' => 'edit_user'
-        ]);
-
-        Permission::create([
-            'name' => 'delete_user'
+            'name' => 'user_edit_delete_update'
         ]);
 
         Permission::create([

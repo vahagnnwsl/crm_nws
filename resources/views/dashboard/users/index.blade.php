@@ -89,22 +89,22 @@
                                     @endif
                                 </td>
                                 <td class="project-actions text-right">
-                                    @can('view_user')
+                                    @can('view_user_and_users_list')
                                         @if($user->is_accepted_invitation)
                                             <a class="btn btn-primary btn-sm" href="{{route('users.show',$user->id)}}">
                                                 <i class="fas fa-folder">
                                                 </i>
-                                                View
+
                                             </a>
                                         @endif
                                     @endcan
 
-                                    @can('edit_user')
+                                    @can('user_edit_delete_update')
                                         @if($user->is_accepted_invitation)
                                             <a class="btn btn-info btn-sm" href="{{route('users.edit',$user->id)}}">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
-                                                Edit
+
                                             </a>
                                         @endif
                                     @endcan
@@ -114,7 +114,7 @@
                                             <a class="btn btn-success btn-sm" href="{{route('users.login',$user->id)}}">
                                                 <i class="fas fa-sign-in-alt">
                                                 </i>
-                                                Login
+
                                             </a>
                                         @endif
                                     @endcan
@@ -125,12 +125,12 @@
                                                href="{{route('users.resend-invitation',$user->id)}}">
                                                 <i class="fas fa-envelope">
                                                 </i>
-                                                Resend invitation
+
                                             </a>
                                         @endif
                                     @endcan
 
-                                    @can('delete_user')
+                                    @can('user_edit_delete_update')
                                         <form method="POST" action="{{ route('users.destroy',  $user->id) }}"
                                               accept-charset="UTF-8"
                                               style="display:inline">
@@ -139,7 +139,7 @@
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                     title="Delete Permission"
                                                     onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                                <i class="fas fa-trash"> </i> Delete
+                                                <i class="fas fa-trash"> </i>
                                             </button>
                                         </form>
                                     @endcan

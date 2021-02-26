@@ -19,7 +19,7 @@ Vue.component('role-permissions-component', {
         <div class="card-footer">
             <div class="btn-group float-right">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                <button type="submit" class="btn btn-success" @click="submit">Submit</button>
+                <button type="submit" class="btn btn-success" @click="submit"><i class="fa fa-check-circle mr-2"></i>Submit</button>
             </div>
         </div>
         </div>

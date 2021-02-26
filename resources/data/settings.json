@@ -1,0 +1,17 @@
+{
+    "currencies": [
+        {
+            "label": "USD",
+            "icon": "fa fa-dollar-sign"
+        },
+        {
+            "label": "RUB",
+            "icon": "fa fa-ruble-sign"
+        },
+        {
+            "label": "COIN",
+            "icon": "fab fa-btc"
+        }
+
+    ]
+}

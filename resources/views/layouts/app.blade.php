@@ -15,11 +15,12 @@
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.css">
     @stack('css')
-     <style>
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
+    <style>
          /* Absolute Center Spinner */
          .loading {
              position: fixed;

@@ -15,7 +15,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card">
-                @can('role_create_update_delete')
+                @can('roles_edit_delete_update')
                     <div class="card-header p-2">
                         <a class="btn btn-success btn-sm float-right" href="#" data-toggle="modal"
                            data-target="#role__create">
@@ -64,11 +64,11 @@
                                     </td>
 
                                     <td class="project-actions text-right">
-                                        @can('give_permission_to_role')
+                                        @can('roles_edit_delete_update')
                                             <a class="btn btn-info btn-sm edit-btn" data-id="{{$role->id}}" href="#"
                                                data-toggle="modal" data-target="#role__permission">
                                                 <i class="fas fa-pencil-alt"></i>
-                                                Edit
+
                                             </a>
                                         @endcan
                                     </td>
