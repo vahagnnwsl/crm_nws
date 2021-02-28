@@ -159,6 +159,14 @@
             </div>
 
         </div>
+        <user-crate-component :roles="{{json_encode($roles)}}"></user-crate-component>
+
     </section>
-    @include('dashboard.modals.create-user-modal',['roles'=>$roles])
 @endsection
+
+
+@push('js')
+
+    <script src="/components/user-crate.js"></script>
+
+@endpush

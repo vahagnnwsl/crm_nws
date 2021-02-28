@@ -50,4 +50,12 @@ class Order extends Model
     {
         return $this->hasOne(User::class, 'id', 'creator_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function people()
+    {
+        return $this->hasMany(OrderPerson::class, 'order_id');
+    }
 }

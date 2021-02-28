@@ -21,130 +21,134 @@
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 
     <style>
-         /* Absolute Center Spinner */
-         .loading {
-             position: fixed;
-             z-index: 999;
-             height: 2em;
-             width: 2em;
-             overflow: show;
-             margin: auto;
-             top: 0;
-             left: 0;
-             bottom: 0;
-             right: 0;
-         }
+        /* Absolute Center Spinner */
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
 
-         /* Transparent Overlay */
-         .loading:before {
-             content: '';
-             display: block;
-             position: fixed;
-             top: 0;
-             left: 0;
-             width: 100%;
-             height: 100%;
-             background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+        /* Transparent Overlay */
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
 
-             background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-         }
+            background: -webkit-radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
+        }
 
-         /* :not(:required) hides these rules from IE9 and below */
-         .loading:not(:required) {
-             /* hide "loading..." text */
-             font: 0/0 a;
-             color: transparent;
-             text-shadow: none;
-             background-color: transparent;
-             border: 0;
-         }
+        /* :not(:required) hides these rules from IE9 and below */
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
 
-         .loading:not(:required):after {
-             content: '';
-             display: block;
-             font-size: 10px;
-             width: 1em;
-             height: 1em;
-             margin-top: -0.5em;
-             -webkit-animation: spinner 150ms infinite linear;
-             -moz-animation: spinner 150ms infinite linear;
-             -ms-animation: spinner 150ms infinite linear;
-             -o-animation: spinner 150ms infinite linear;
-             animation: spinner 150ms infinite linear;
-             border-radius: 0.5em;
-             -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-             box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-         }
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 150ms infinite linear;
+            -moz-animation: spinner 150ms infinite linear;
+            -ms-animation: spinner 150ms infinite linear;
+            -o-animation: spinner 150ms infinite linear;
+            animation: spinner 150ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) -1.5em 0 0 0, rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) -1.5em 0 0 0, rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+        }
 
-         /* Animation */
+        /* Animation */
 
-         @-webkit-keyframes spinner {
-             0% {
-                 -webkit-transform: rotate(0deg);
-                 -moz-transform: rotate(0deg);
-                 -ms-transform: rotate(0deg);
-                 -o-transform: rotate(0deg);
-                 transform: rotate(0deg);
-             }
-             100% {
-                 -webkit-transform: rotate(360deg);
-                 -moz-transform: rotate(360deg);
-                 -ms-transform: rotate(360deg);
-                 -o-transform: rotate(360deg);
-                 transform: rotate(360deg);
-             }
-         }
-         @-moz-keyframes spinner {
-             0% {
-                 -webkit-transform: rotate(0deg);
-                 -moz-transform: rotate(0deg);
-                 -ms-transform: rotate(0deg);
-                 -o-transform: rotate(0deg);
-                 transform: rotate(0deg);
-             }
-             100% {
-                 -webkit-transform: rotate(360deg);
-                 -moz-transform: rotate(360deg);
-                 -ms-transform: rotate(360deg);
-                 -o-transform: rotate(360deg);
-                 transform: rotate(360deg);
-             }
-         }
-         @-o-keyframes spinner {
-             0% {
-                 -webkit-transform: rotate(0deg);
-                 -moz-transform: rotate(0deg);
-                 -ms-transform: rotate(0deg);
-                 -o-transform: rotate(0deg);
-                 transform: rotate(0deg);
-             }
-             100% {
-                 -webkit-transform: rotate(360deg);
-                 -moz-transform: rotate(360deg);
-                 -ms-transform: rotate(360deg);
-                 -o-transform: rotate(360deg);
-                 transform: rotate(360deg);
-             }
-         }
-         @keyframes spinner {
-             0% {
-                 -webkit-transform: rotate(0deg);
-                 -moz-transform: rotate(0deg);
-                 -ms-transform: rotate(0deg);
-                 -o-transform: rotate(0deg);
-                 transform: rotate(0deg);
-             }
-             100% {
-                 -webkit-transform: rotate(360deg);
-                 -moz-transform: rotate(360deg);
-                 -ms-transform: rotate(360deg);
-                 -o-transform: rotate(360deg);
-                 transform: rotate(360deg);
-             }
-         }
-     </style>
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
-<body class="{{request()->is('login*')|| request()->is('user-invitation*')  ?'hold-transition login-page':'sidebar-mini'}}">
+<body
+    class="{{request()->is('login*')|| request()->is('user-invitation*')  ?'hold-transition login-page':'sidebar-mini'}}">
 @yield('content')
 
 <!-- /.login-box -->
@@ -164,44 +168,41 @@
 
 <script>
 
-
-    // toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
     @foreach (['success', 'warning', 'error', 'info'] as $key)
-            @if ($value = session($key))
+    @if ($value = session($key))
 
-              toastr.{{$key}}('{{session()->get($key)}}');
-
-
-            @endif
-     @endforeach
+    toastr.{{$key}}('{{session()->get($key)}}');
 
 
-    window.VeeValidate = VeeValidate;
+    @endif
+        @endforeach
+
+
+        window.VeeValidate = VeeValidate;
 
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
     // Add a request interceptor
     axios.interceptors.request.use(function (config) {
-        $(document).trigger('loader.update',true);
+        $(document).trigger('loader.update', true);
         return config;
     }, function (error) {
-        $(document).trigger('loader.update',false);
+        $(document).trigger('loader.update', false);
         return Promise.reject(error);
     });
 
     // Add a response interceptor
     axios.interceptors.response.use(function (response) {
 
-        $(document).trigger('loader.update',false);
+        $(document).trigger('loader.update', false);
 
         return response;
     }, function (error) {
-        $(document).trigger('loader.update',false);
+        $(document).trigger('loader.update', false);
 
         return Promise.reject(error);
     });
-
 
 
     Vue.prototype.$http = axios
@@ -243,7 +244,9 @@
         el: "#app",
         methods: {}
     });
-
+    // $(document).on('hidden.bs.modal', '.modal', function () {
+    //     $('.modal').find('.invalid-feedback').text(null);
+    // })
 </script>
 
 </body>

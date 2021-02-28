@@ -40,9 +40,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/orders/{id}', 'OrderController@update')->name('orders.update');
 
 
+    Route::post('/order-peoples', 'OrderPersonController@store')->name('order-persons.store');
 
 });
-
 
 
 

@@ -165,13 +165,37 @@
                                 <h3 class="card-title">Persons</h3>
 
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#order__person">
+                                    <button type="button" class="btn btn-tool" data-toggle="modal"
+                                            data-target="#order__person">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="card-body">
+                                <table class="table table-striped projects">
 
+                                    <tbody>
+                                    @foreach($order->people as $person)
+                                      <tr>
+                                        <td>
+                                           {{$person->fullName}}
+                                        </td>
+
+                                        <td>
+                                            {{$person->created_at->format('Y-m-d')}}
+                                        </td>
+                                        <td class="project-actions text-right">
+                                            <a data-id="1" href="#"
+                                               data-toggle="modal"
+                                               data-target="#role__permission"
+                                               class="btn btn-info btn-sm edit-btn">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
@@ -179,7 +203,7 @@
                 </div>
             </div>
         </div>
-        <order-person-component></order-person-component>
+        <order-person-component :order="{{$order}}"></order-person-component>
     </section>
 @endsection
 @push('js')

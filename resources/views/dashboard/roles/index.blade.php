@@ -79,15 +79,24 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <script>
+        <role-crate-component></role-crate-component>
+        <role-permissions-component :permissions="{{json_encode($permissions)}}"></role-permissions-component>
 
-        </script>
     </section>
 
-    @include('dashboard.modals.role-permission-modal')
-    @include('dashboard.modals.create-role-modal')
 
 @endsection
+
+@push('js')
+    <script src="/components/role-crate.js"></script>
+    <script src="/components/role_permissions.js"></script>
+    <script>
+
+        $(document).on("click", ".edit-btn", function () {
+            $(document).trigger('role_id.update',$(this).attr('data-id'));
+        });
+
+    </script>
+@endpush
 
