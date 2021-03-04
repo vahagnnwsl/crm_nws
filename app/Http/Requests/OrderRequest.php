@@ -25,15 +25,25 @@ class OrderRequest extends FormRequest
     public function rules()
     {
 
-        return [
+
+        $rules = [
             'name' => 'required|string|max:255',
             'link' => 'required|string|max:255',
             'source' => 'required||in:' . implode(',', orderSources()),
             'stacks' => 'array|min:1|required||in:' . implode(',', stacksList()),
             'currency' => 'required_with:budget||in:' . implode(',', currenciesList()),
             'budget' => 'required_with:currency|numeric|between:1,90000|nullable',
-            'description' => 'sometimes|string|nullable'
+            'description' => 'sometimes|string|nullable',
+            'agent_id' => 'required|exists:App\Models\Agent,id'
+
         ];
+
+        if ($this->method() === 'PUT') {
+            $rules['status'] = 'required';
+        }
+
+        return $rules;
+
 
     }
 }

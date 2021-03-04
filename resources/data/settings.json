@@ -13,5 +13,52 @@
             "icon": "fab fa-btc"
         }
 
+    ],
+    "orderSources": [
+        "freelancer.ru",
+        "upwork.com",
+        "odeskwork.com",
+        "habr.com",
+        "github.com",
+        "facebook.com",
+        "linkedin.com",
+        "vk.com",
+        "nwslab.com",
+        "devinnotech.ru",
+        "toptal.com"
+    ],
+    "stacks": {
+        "languages": [
+            "PHP",
+            "Javascript",
+            "Java",
+            "Python"
+        ],
+        "front_end": [
+            "Html",
+            "Css",
+            "Html",
+            "Bootstrap",
+            "MaterialCSS",
+            "ReactJS",
+            "VueJS",
+            "Angular",
+            "AngularJS",
+            "JQuery"
+        ],
+        "back_end": [
+            "Laravel",
+            "Yii2",
+            "CodeIgniter",
+            "NodeJS",
+            "Django",
+            "Flask",
+            "Spring"
+        ]
+    },
+    "developer_positions": [
+        "front_end",
+        "back_end",
+        "full_stack"
     ]
 }

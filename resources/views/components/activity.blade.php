@@ -20,7 +20,7 @@
                         <h3 class="timeline-header border-0"><a
                                 href="#">
                                 @if($activity->causer)
-                                    {{$activity->causer->name_for_log}}
+                                    {{$activity->causer_type}}   {{$activity->causer_id}}
                                 @endif
 
                             </a> {{$activity->description}}

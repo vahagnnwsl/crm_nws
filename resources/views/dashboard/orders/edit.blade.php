@@ -49,6 +49,37 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="agent">Status *</label>
+                                            <select class="form-control" id="status" name="status">
+                                                @foreach($statuses as $key => $status)
+                                                    <option
+                                                        value="{{$key}}" {{$order->status===$key?'selected':''}}>{{$status}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('status')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="agent">Agent *</label>
+                                            <select class="form-control" id="agent" name="agent_id">
+                                                <option disabled selected>Select one</option>
+                                                @foreach($agents as $agent)
+                                                    <option
+                                                        value="{{$agent->id}}" {{$order->agent_id===$agent->id?'selected':''}}>{{$agent->fullName}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('agent_id')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="sources">Source *</label>
                                             <select class="form-control" id="sources" name="source">
                                                 <option disabled selected>Select one</option>
@@ -159,47 +190,50 @@
                         </form>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="card card-secondary">
-                            <div class="card-header">
-                                <h3 class="card-title">Persons</h3>
+                    @can('order_person_create_update_delete')
+                        <div class="col-md-6">
+                            <div class="card card-secondary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Persons</h3>
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-toggle="modal"
-                                            data-target="#order__person">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-toggle="modal"
+                                                data-target="#order__person">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
+
+
+                                <div class="card-body">
+                                    <table class="table table-striped projects">
+
+                                        <tbody>
+                                        @foreach($order->people as $person)
+                                            <tr>
+                                                <td>
+                                                    {{$person->fullName}}
+                                                </td>
+
+                                                <td>
+                                                    {{$person->created_at->format('Y-m-d')}}
+                                                </td>
+                                                <td class="project-actions text-right">
+                                                    <a data-id="{{$person->id}}" href="#"
+
+                                                       class="btn btn-info btn-sm edit-person-btn">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
-                            <div class="card-body">
-                                <table class="table table-striped projects">
-
-                                    <tbody>
-                                    @foreach($order->people as $person)
-                                      <tr>
-                                        <td>
-                                           {{$person->fullName}}
-                                        </td>
-
-                                        <td>
-                                            {{$person->created_at->format('Y-m-d')}}
-                                        </td>
-                                        <td class="project-actions text-right">
-                                            <a data-id="1" href="#"
-                                               data-toggle="modal"
-                                               data-target="#role__permission"
-                                               class="btn btn-info btn-sm edit-btn">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
                         </div>
-                    </div>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -208,23 +242,33 @@
 @endsection
 @push('js')
     <script src="/plugins/select2/js/select2.full.min.js"></script>
-    <script src="/components/order-person.js"></script>
 
-    <script>
+    @can('order_person_create_update_delete')
+        <script src="/components/order-person.js"></script>
 
-        $(document).ready(function () {
-            $("input[name='currency']").click(function () {
-                $('.currency_show_btn').html($(this).next().html())
+        <script>
+
+
+            $(document).ready(function () {
+
+                $('.edit-person-btn').click(function () {
+                    $(document).trigger('order_person_id.update', $(this).attr('data-id'));
+                    $('#order__person').modal('show');
+                })
+
+                $("input[name='currency']").click(function () {
+                    $('.currency_show_btn').html($(this).next().html())
+                })
             })
-        })
 
 
-        $(function () {
+            $(function () {
 
-            $('.select2').select2({
-                multiple: true,
-                data: @json($stacks)
-            })
-        });
-    </script>
+                $('.select2').select2({
+                    multiple: true,
+                    data: @json($stacks)
+                })
+            });
+        </script>
+    @endcan
 @endpush

@@ -12,7 +12,6 @@ Vue.component('loader', {
     mounted(){
         let _this = this;
         $(document).on('loader.update', function (e, response) {
-            console.log(response)
             _this.show = response;
         });
     }

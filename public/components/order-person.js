@@ -117,31 +117,74 @@ Vue.component('order-person-component', {
                 telegram: '',
                 skype: '',
                 order_id: ''
-            }
+            },
+            url: '/dashboard/order-peoples'
         }
     },
     props: ['order'],
+    mounted() {
+        let _this = this;
+
+        $(document).on('hidden.bs.modal', '#order__person', function () {
+            _this.setDefaults();
+
+            _this.url = '/dashboard/order-peoples';
+        });
+
+        $(document).on('order_person_id.update', function (e, response) {
+            _this.getPerson(response);
+            _this.url = `/dashboard/order-peoples/${response}`;
+
+        });
+
+
+    },
     methods: {
         submit: function () {
-
             this.form.order_id = this.order.id;
-
             this.$validator.validate().then(valid => {
                 if (valid) {
-                    this.$http.post('/dashboard/order-peoples', this.form)
+                    this.$http.post(this.url, this.form)
                         .then((response) => {
                             setTimeout(function () {
                                 location.reload();
                             }, 200)
                         }).catch((error) => {
                         this.$setErrorsFromResponse(error.response.data);
-
                     })
 
                 }
 
             });
+        },
+        getPerson: function (id) {
+            this.$http.get(`/dashboard/order-peoples/${id}`)
+                .then((response) => {
 
+                    let form = this.form;
+                    let data = response.data.data;
+
+
+                    for (let key in form) {
+                        if (data.hasOwnProperty(key)) {
+                            form[key] = data[key]
+                        }
+                    }
+
+                }).catch((error) => {
+
+            })
+        },
+        setDefaults: function () {
+
+            this.form.first_name = '';
+            this.form.last_name = '';
+            this.form.position = '';
+            this.form.email = '';
+            this.form.phone = '';
+            this.form.telegram = '';
+            this.form.skype = '';
+            this.form.order_id = '';
 
         }
 

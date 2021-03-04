@@ -53,7 +53,7 @@ class RoleRepository
         }
 
         if ($role) {
-            $this->logger->log($user_id,$role,'Synced permissions',$permissions,$role->permissions->pluck('id')->toArray());
+           // $this->logger->log($user_id,$role,'Synced permissions',$permissions,$role->permissions->pluck('id')->toArray());
             $role->syncPermissions($permissions);
         }
 

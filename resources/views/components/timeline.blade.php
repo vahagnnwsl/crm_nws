@@ -11,6 +11,7 @@
             </div>
 
             @foreach($activities as $activity)
+
                 <div>
                     <i class="fas fa-user bg-info"></i>
 
@@ -19,9 +20,7 @@
 
                         <h3 class="timeline-header border-0"><a
                                 href="#">
-                                @if($activity->subject)
-                                    {{$activity->subject->name_for_log}}
-                                @endif
+                                {{$activity->subject_type}}
                             </a> {{$activity->description}}
                         </h3>
                         <div>

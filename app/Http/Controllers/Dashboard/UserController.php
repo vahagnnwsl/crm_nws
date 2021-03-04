@@ -65,7 +65,7 @@ class UserController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
 
-    public function show($id,Request $request)
+    public function show($id, Request $request)
     {
         $user = $this->userRepository->getById($id);
 
@@ -126,8 +126,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userRepository->destroy($id);
-        $this->putFlashMessage(true, 'successfully deleted');
+        $resp = $this->userRepository->destroy($id);
+        $this->putFlashMessage($resp ? false : true, $resp ? $resp['msg'] : 'successfully deleted');
 
         return redirect()->back();
     }

@@ -21,7 +21,7 @@ class Controller extends BaseController
         if ($status) {
             session()->flash('success', $msg ?? 'Successfully');
         } else {
-            session()->flash('error', 'Something went wrong');
+            session()->flash('error', $msg ??'Something went wrong');
         }
 
     }

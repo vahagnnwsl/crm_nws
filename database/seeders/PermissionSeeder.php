@@ -48,6 +48,42 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'name' => 'role_create_update_delete'
         ]);
+
+        Permission::create([
+            'name' => 'order_create_update_delete'
+        ]);
+
+        Permission::create([
+            'name' => 'order_update_status'
+        ]);
+
+        Permission::create([
+            'name' => 'view_order_and_orders_list'
+        ]);
+
+        Permission::create([
+            'name' => 'order_person_create_update_delete'
+        ]);
+
+        Permission::create([
+            'name' => 'view_order_person_and_order_people_list'
+        ]);
+
+        Permission::create([
+            'name' => 'agent_create_update_delete'
+        ]);
+
+        Permission::create([
+            'name' => 'view_agent_and_agents_list'
+        ]);
+
+        Permission::create([
+            'name' => 'developer_create_update_delete'
+        ]);
+
+        Permission::create([
+            'name' => 'view_developer_and_developers_list'
+        ]);
     }
 }
 

@@ -59,6 +59,7 @@
                 </li>
                 @endcan
 
+                @can('view_order_and_orders_list')
                 <li class="nav-item">
                     <a href="{{route('orders.index')}}"
                        class="nav-link {{request()->is('dashboard/orders*') ?'active':''}}">
@@ -66,6 +67,28 @@
                         <p>Orders</p>
                     </a>
                 </li>
+                @endcan
+
+                @can('view_agent_and_agents_list')
+                <li class="nav-item">
+                    <a href="{{route('agents.index')}}"
+                       class="nav-link {{request()->is('dashboard/agents*') ?'active':''}}">
+                        <i class="fa fa-user-secret nav-icon"></i>
+                        <p>Agents</p>
+                    </a>
+                </li>
+                @endcan
+
+                @can('view_developer_and_developers_list')
+                <li class="nav-item">
+                    <a href="{{route('developers.index')}}"
+                       class="nav-link {{request()->is('dashboard/developers*') ?'active':''}}">
+                        <i class="fab fa-dev nav-icon"></i>
+                        <p>Developers</p>
+                    </a>
+                </li>
+                @endcan
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

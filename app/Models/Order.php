@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
+
 
     protected $fillable = [
         'name',
@@ -15,6 +17,7 @@ class Order extends Model
         'source',
         'link',
         'creator_id',
+        'agent_id',
         'status',
         'stacks',
         'budget',
@@ -22,6 +25,7 @@ class Order extends Model
         'hash'
     ];
 
+    protected static $logAttributes = ['name', 'description', 'source','link','agent_id','status','stacks','budget','currency'];
 
     public function setStacksAttribute($value)
     {
@@ -52,10 +56,20 @@ class Order extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function agent()
+    {
+        return $this->hasOne(Agent::class, 'id', 'agent_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function people()
     {
         return $this->hasMany(OrderPerson::class, 'order_id');
     }
+
+
 }

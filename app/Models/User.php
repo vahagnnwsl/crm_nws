@@ -18,7 +18,7 @@ class User extends Authenticatable
     /**
      * @var string[]
      */
-    protected static $logAttributes = ['first_name', 'last_name', 'status','avatar'];
+    protected static $logAttributes = ['first_name', 'last_name', 'status', 'avatar'];
 
     /**
      * The attributes that are mass assignable.
@@ -103,5 +103,37 @@ class User extends Authenticatable
         return $this->full_name;
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'creator_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function agents()
+    {
+        return $this->hasMany(Agent::class, 'creator_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function developers()
+    {
+        return $this->hasMany(Developer::class, 'creator_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderPersons()
+    {
+        return $this->hasMany(OrderPerson::class, 'creator_id');
+    }
 
 }

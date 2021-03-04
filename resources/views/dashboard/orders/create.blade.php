@@ -29,7 +29,7 @@
                     <form method="POST" action="{{route('orders.store')}}">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mx-auto">
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h3 class="card-title">General</h3>
@@ -42,6 +42,22 @@
                                             @error('name')
                                             <span class="invalid-feedback d-block" role="alert">
                                                  <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="agent">Agent </label>
+                                            <select class="form-control" id="agent" name="agent_id">
+                                                <option disabled selected>Select one</option>
+                                                @foreach($agents as $agent)
+                                                    <option
+                                                        value="{{$agent->id}}" {{old('agent_id')===$agent->id?'selected':''}}>{{$agent->fullName}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('agent_id')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
@@ -144,18 +160,16 @@
                                                 </span>
                                             @enderror
                                         </div>
-
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success float-right"><i
+                                                    class="fa fa-check-circle"></i> Submit
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-success float-right"><i
-                                        class="fa fa-check-circle"></i> Submit
-                                </button>
-                            </div>
-                        </div>
+
                     </form>
                 </div>
             </div>

@@ -142,14 +142,43 @@ class UserRepository
 
     /**
      * @param $id
+     * @return array
      */
 
-    public function destroy($id): void
+    public function destroy($id): array
     {
         $user = $this->getById($id);
+
         if ($user) {
+
+             if ($user->orders->count()){
+                 return [
+                   'msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $user->orders->pluck('id')->toArray()).']'
+                 ];
+             }
+
+            if ($user->orders->agents()){
+                return [
+                    'msg'=>'Please before delete,delete agents where ID in array ['. implode(',', $user->agents->pluck('id')->toArray()).']'
+                ];
+            }
+
+            if ($user->orders->developers()){
+                return [
+                    'msg'=>'Please before delete,delete developers where ID in array ['. implode(',', $user->developers->pluck('id')->toArray()).']'
+                ];
+            }
+
+            if ($user->orders->orderPersons()){
+                return [
+                    'msg'=>'Please before delete,delete orderPersons where ID in array ['. implode(',', $user->orderPersons->pluck('id')->toArray()).']'
+                ];
+            }
+
             $user->delete();
         }
+
+        return [];
     }
 
     /**
@@ -180,7 +209,7 @@ class UserRepository
      */
     public function activities(object $user)
     {
-        $activities =  $user->activities()->orderByDesc('created_at')->paginate(10);
+        $activities = $user->activities()->orderByDesc('created_at')->paginate(10);
 
 
         $grouped_by_date = $activities->mapToGroups(function ($activity) {
@@ -198,7 +227,7 @@ class UserRepository
 
     public function timeline(object $user)
     {
-        $timeline =  $user->timeline()->orderByDesc('created_at')->paginate(10);
+        $timeline = $user->timeline()->orderByDesc('created_at')->paginate(10);
 
 
         $grouped_by_date = $timeline->mapToGroups(function ($item) {
