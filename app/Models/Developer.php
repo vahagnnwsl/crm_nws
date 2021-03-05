@@ -20,8 +20,28 @@ class Developer extends Model
         'phone',
         'cv',
         'position',
-        'status'
+        'status',
+        'stacks'
     ];
+
+    /**
+     * @param $value
+     */
+    public function setStacksAttribute($value)
+    {
+        $this->attributes['stacks'] = json_encode($value);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function getStacksAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+
 
     /**
      * @return string

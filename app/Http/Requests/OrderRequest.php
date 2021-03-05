@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Repositories\DeveloperRepository;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OrderRequest extends FormRequest
 {
@@ -26,7 +28,7 @@ class OrderRequest extends FormRequest
     {
 
 
-        $rules = [
+        return [
             'name' => 'required|string|max:255',
             'link' => 'required|string|max:255',
             'source' => 'required||in:' . implode(',', orderSources()),
@@ -34,15 +36,25 @@ class OrderRequest extends FormRequest
             'currency' => 'required_with:budget||in:' . implode(',', currenciesList()),
             'budget' => 'required_with:currency|numeric|between:1,90000|nullable',
             'description' => 'sometimes|string|nullable',
-            'agent_id' => 'required|exists:App\Models\Agent,id'
+            'agent_id' => 'required|exists:App\Models\Agent,id',
+//            'team_lid_id' => ['required',
+//                Rule::exists('developers')->where(function ($query) {
+//                    $query->where([
+//                        'id' => $this->get('team_lid_id'),
+//                        'status' => DeveloperRepository::STATUS_ACCEPTED
+//                    ]);
+//                })
+//            ],
+            'developer_id' => ['required',
+                Rule::exists('developers')->where(function ($query) {
+                    $query->where([
+                        'id' => $this->get('developer_id'),
+                        'status' => DeveloperRepository::STATUS_ACCEPTED
+                    ]);
+                })
+            ],
 
         ];
-
-        if ($this->method() === 'PUT') {
-            $rules['status'] = 'required';
-        }
-
-        return $rules;
 
 
     }

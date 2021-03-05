@@ -90,7 +90,7 @@
                                     <td class="project-actions text-right">
 
                                         @can('view_order_and_orders_list')
-                                            <a class="btn btn-info btn-sm" href="#">
+                                            <a class="btn btn-info btn-sm" href="{{route('orders.show',$order->id)}}">
                                                 <i class="fas fa-folder"></i>
                                             </a>
                                         @endcan

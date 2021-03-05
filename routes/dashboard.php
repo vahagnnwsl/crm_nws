@@ -34,10 +34,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/users/{id}', 'UserController@destroy')->name('users.destroy')->middleware('permission:user_edit_delete_update');
 
     Route::get('/orders', 'OrderController@index')->name('orders.index')->middleware('permission:view_order_and_orders_list');
+    Route::get('/orders/{id}/show', 'OrderController@show')->name('orders.show')->middleware('permission:view_order_and_orders_list');
     Route::get('/orders/{id}/edit', 'OrderController@edit')->name('orders.edit')->middleware('permission:order_create_update_delete');
     Route::get('/orders/create', 'OrderController@create')->name('orders.create')->middleware('permission:order_create_update_delete');
     Route::post('/orders', 'OrderController@store')->name('orders.store')->middleware('permission:order_create_update_delete');
     Route::put('/orders/{id}', 'OrderController@update')->name('orders.update')->middleware('permission:order_create_update_delete');
+    Route::put('/orders/{id}/status', 'OrderController@updateStatus')->name('orders.updateStatus')->middleware('permission:order_update_status');
+    Route::get('/orders/{id}/status', 'OrderController@getStatusComments')->name('orders.getStatusComments')->middleware('permission:order_update_status');
     Route::delete('/orders/{id}', 'OrderController@destroy')->name('orders.destroy')->middleware('permission:order_create_update_delete');
 
 

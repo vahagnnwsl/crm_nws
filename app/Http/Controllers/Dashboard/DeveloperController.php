@@ -42,8 +42,9 @@ class DeveloperController extends Controller
     {
 
         $developerPositions = developerPositions();
+        $stacks = stacksForSelect2();
 
-        return view('dashboard.developers.create', compact('developerPositions'));
+        return view('dashboard.developers.create', compact('developerPositions', 'stacks'));
     }
 
 
@@ -74,8 +75,9 @@ class DeveloperController extends Controller
         $developerPositions = developerPositions();
 
         $developerStatuses = developerStatuses();
+        $stacks = stacksForSelect2();
 
-        return view('dashboard.developers.edit', compact('developer', 'developerPositions', 'developerStatuses'));
+        return view('dashboard.developers.edit', compact('developer', 'developerPositions', 'developerStatuses', 'stacks'));
     }
 
 
@@ -93,10 +95,8 @@ class DeveloperController extends Controller
 
         $developerStatuses = developerStatuses();
 
-        return view('dashboard.developers.show', compact('developer',  'developerStatuses'));
+        return view('dashboard.developers.show', compact('developer', 'developerStatuses'));
     }
-
-
 
 
     /**
@@ -118,7 +118,8 @@ class DeveloperController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id) {
+    public function destroy(int $id)
+    {
 
         $this->developerRepository->destroy($id);
         $this->putFlashMessage(true, 'Successfully deleted');

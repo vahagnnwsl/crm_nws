@@ -28,8 +28,9 @@ class DeveloperRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'sometimes|string|max:255|nullable',
+            'stacks' => 'array|min:1|required||in:' . implode(',', stacksList()),
             'phone' => 'sometimes|string|max:255|nullable',
-            'cv' => 'required|mimes:doc,pdf,docx|max:4072',
+            'cv' => 'sometimes|mimes:doc,pdf,docx|max:4072|nullable',
             'position' => 'required||in:' . implode(',', developerPositions()),
         ];
 

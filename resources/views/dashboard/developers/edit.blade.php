@@ -1,4 +1,8 @@
 @extends('dashboard.layouts')
+@push('css')
+
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+@endpush
 @section('sub_content')
     <section class="content-header">
         <div class="container-fluid">
@@ -21,7 +25,8 @@
                 </div>
 
                 <div class="card-body p-2">
-                    <form method="POST" action="{{route('developers.update',$developer->id)}}" enctype="multipart/form-data">
+                    <form method="POST" action="{{route('developers.update',$developer->id)}}"
+                          enctype="multipart/form-data">
 
                         @csrf
                         <input name="_method" type="hidden" value="PUT">
@@ -116,6 +121,23 @@
                                             @enderror
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="stacks">Stacks *</label>
+                                            <select class="select2" style="width: 100%;" name="stacks[]" id="stacks"
+                                                    multiple="multiple">
+
+                                                @if($developer->stacks)
+                                                    @foreach($developer->stacks as $stack)
+                                                        <option value="{{$stack}}" selected>{{$stack}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            @error('stacks')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                                 <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="cv">Cv </label>
@@ -146,3 +168,17 @@
         </div>
     </section>
 @endsection
+@push('js')
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $('.select2').select2({
+                multiple: true,
+                data: @json($stacks)
+            })
+        });
+    </script>
+@endpush

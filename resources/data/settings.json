@@ -14,6 +14,7 @@
         }
 
     ],
+
     "orderSources": [
         "freelancer.ru",
         "upwork.com",
@@ -27,6 +28,7 @@
         "devinnotech.ru",
         "toptal.com"
     ],
+
     "stacks": {
         "languages": [
             "PHP",
@@ -56,6 +58,7 @@
             "Spring"
         ]
     },
+
     "developer_positions": [
         "front_end",
         "back_end",

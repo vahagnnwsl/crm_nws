@@ -1,4 +1,8 @@
 @extends('dashboard.layouts')
+@push('css')
+
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+@endpush
 @section('sub_content')
     <section class="content-header">
         <div class="container-fluid">
@@ -92,10 +96,25 @@
                                         </span>
                                            @enderror
                                        </div>
+                                       <div class="form-group">
+                                           <label for="stacks">Stacks *</label>
+                                           <select class="select2" style="width: 100%;" name="stacks[]" id="stacks"  multiple="multiple">
 
+                                               @if(old('stacks'))
+                                                   @foreach(old('stacks') as $oldStacks)
+                                                       <option value="{{$oldStacks}}" selected>{{$oldStacks}}</option>
+                                                   @endforeach
+                                               @endif
+                                           </select>
+                                           @error('stacks')
+                                           <span class="invalid-feedback d-block" role="alert">
+                                                 <strong>{{ $message }}</strong>
+                                            </span>
+                                           @enderror
+                                       </div>
 
                                        <div class="form-group">
-                                           <label for="cv">Cv *</label>
+                                           <label for="cv">Cv </label>
                                            <input type="file" id="cv" class="form-control"  name="cv" style="padding-top: 3px!important;">
 
                                            @error('cv')
@@ -121,3 +140,17 @@
         </div>
     </section>
 @endsection
+
+@push('js')
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+
+        $(function () {
+
+            $('.select2').select2({
+                multiple: true,
+                data: @json($stacks)
+            })
+        });
+    </script>
+@endpush

@@ -176,97 +176,6 @@
                         </form>
                     </div>
                     <div class="col-md-6">
-                        @can('order_update_status')
-                            <div class="row pl-2 pr-2">
-                                <div class="card card-purple w-100 collapsed-card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Change status</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="agent">Status</label>
-                                            <select class="form-control" id="status" name="status">
-                                                @foreach($statuses as $key => $status)
-                                                    <option
-                                                        value="{{$key}}" {{$order->status===$key?'selected':''}}>{{$status}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('status')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="message">Message</label>
-                                            <textarea class="form-control" name="message" id="message" rows="2"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success float-right mb-2"><i
-                                                    class="fa fa-check-circle"></i> Submit
-                                            </button>
-
-                                        </div>
-
-                                        <div class="form-group mt-2">
-
-                                            <div class="row w-100" style="max-height: 600px;overflow-y: auto">
-                                                <div class="col-12 p-3 border ">
-                                                    <div class="post">
-                                                        <div class="user-block">
-                                                            <img class="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image">
-                                                            <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                        </span>
-                                                            <span class="description">Shared publicly - 7:45 PM today</span>
-                                                        </div>
-                                                        <!-- /.user-block -->
-                                                        <p>
-                                                            Lorem ipsum represents a long-held tradition for designers,
-                                                            typographers and the like. Some people hate it and argue for
-                                                            its demise, but others ignore.
-                                                        </p>
-
-                                                        <p>
-                                                            <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="post">
-                                                        <div class="user-block">
-                                                            <img class="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image">
-                                                            <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                        </span>
-                                                            <span class="description">Shared publicly - 5 days ago</span>
-                                                        </div>
-                                                        <!-- /.user-block -->
-                                                        <p>
-                                                            Lorem ipsum represents a long-held tradition for designers,
-                                                            typographers and the like. Some people hate it and argue for
-                                                            its demise, but others ignore.
-                                                        </p>
-
-                                                        <p>
-                                                            <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v1</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        @endcan
 
                         @can('order_person_create_update_delete')
                             <div class="row pl-2 pr-2">
@@ -312,6 +221,26 @@
                                 </div>
                             </div>
                         @endcan
+                        @can('order_update_status')
+                            <div class="row pl-2 pr-2">
+                                <div class="card card-purple w-100 collapsed-card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Change status</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                  <order-status :statuses="{{json_encode($statuses)}}" :order="{{json_encode($order)}}"></order-status>
+
+                                </div>
+                            </div>
+                        @endcan
+
+
                     </div>
 
                 </div>
@@ -323,6 +252,9 @@
 @push('js')
     <script src="/plugins/select2/js/select2.full.min.js"></script>
 
+    @can('order_update_status')
+      <script src="/components/order-status.js"></script>
+    @endcan
     @can('order_person_create_update_delete')
         <script src="/components/order-person.js"></script>
 

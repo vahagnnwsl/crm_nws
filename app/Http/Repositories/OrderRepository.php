@@ -3,8 +3,9 @@
 namespace App\Http\Repositories;
 
 use App\Models\Order;
+use App\Models\OrderStatusComment;
 
-class OrderRepository
+class OrderRepository extends Repository
 {
 
     const STATUS_SANDED = 0;
@@ -74,6 +75,51 @@ class OrderRepository
         $order->people()->delete();
 
         $order->delete();
+    }
+
+    /**
+     * @param array $requestData
+     * @param int $id
+     * @param int $creator_id
+     */
+    public function updateStatus(array $requestData, int $id, int $creator_id): void
+    {
+        $order = $this->getById($id);
+
+        if ($order) {
+            $order->update(['status' => $requestData['status']]);
+        }
+
+        $data = [
+            'comment' => $requestData['comment'],
+            'creator_id' => $creator_id,
+            'order_id' => $id,
+            'status' => orderStatuses()[$order->status]
+        ];
+
+        if (isset($requestData['attachment'])){
+            $data['attachment'] =  $this->base64Upload($requestData['attachment'],'comments');
+        }
+
+        OrderStatusComment::create($data);
+
+    }
+
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getStatusComments(int $id)
+    {
+        $order = $this->getById($id);
+
+        if ($order) {
+
+            return $order->statusComments()->orderByDesc('created_at')->get();
+        }
+
+        return [];
     }
 
 }

@@ -17,6 +17,8 @@ class Order extends Model
         'source',
         'link',
         'creator_id',
+        'developer_id',
+        'team_lid_id',
         'agent_id',
         'status',
         'stacks',
@@ -71,5 +73,13 @@ class Order extends Model
         return $this->hasMany(OrderPerson::class, 'order_id');
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function statusComments() {
+
+        return $this->hasMany(OrderStatusComment::class);
+    }
 
 }

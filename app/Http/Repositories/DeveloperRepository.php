@@ -39,7 +39,11 @@ class DeveloperRepository
     public function store(int $creator_id, array $reqData): void
     {
         $reqData['creator_id'] = $creator_id;
-        $reqData['cv'] = $this->uploadCv($reqData['cv']);
+
+        if (isset($reqData['cv'])) {
+            $reqData['cv'] = $this->uploadCv($reqData['cv']);
+        }
+
         Developer::create($reqData);
     }
 
@@ -81,6 +85,14 @@ class DeveloperRepository
         if ($developer) {
             $developer->delete();
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccepted()
+    {
+        return Developer::whereStatus($this::STATUS_ACCEPTED)->get();
     }
 
 }

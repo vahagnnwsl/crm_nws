@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\PermissionDto;
 use App\Http\Repositories\AgentRepository;
+use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\PermissionRepository;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderStatusRequest;
+use App\Http\Resources\OrderStatusCommentCollection;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
 
     /**
      * @var OrderRepository
@@ -27,14 +31,21 @@ class OrderController extends Controller
     protected $agentRepository;
 
     /**
+     * @var DeveloperRepository
+     */
+    protected $developerRepository;
+
+    /**
      * OrderController constructor.
      * @param OrderRepository $orderRepository
      * @param AgentRepository $agentRepository
+     * @param DeveloperRepository $developerRepository
      */
-    public function __construct(OrderRepository $orderRepository, AgentRepository $agentRepository)
+    public function __construct(OrderRepository $orderRepository, AgentRepository $agentRepository, DeveloperRepository $developerRepository)
     {
         $this->orderRepository = $orderRepository;
         $this->agentRepository = $agentRepository;
+        $this->developerRepository = $developerRepository;
     }
 
     /**
@@ -59,9 +70,10 @@ class OrderController extends Controller
         $stacks = stacksForSelect2();
         $currencies = currencies();
 
+        $developers = $this->developerRepository->getAccepted();
         $agents = $this->agentRepository->getAll();
 
-        return view('dashboard.orders.create', compact('sources', 'stacks', 'currencies', 'agents'));
+        return view('dashboard.orders.create', compact('sources', 'stacks', 'currencies', 'agents', 'developers'));
 
     }
 
@@ -84,10 +96,10 @@ class OrderController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(int $id)
     {
 
         $order = $this->orderRepository->getById($id);
@@ -104,6 +116,23 @@ class OrderController extends Controller
 
         return view('dashboard.orders.edit', compact('statuses', 'sources', 'stacks', 'currencies', 'order', 'agents'));
 
+    }
+
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View]
+     */
+    public function show(int $id)
+    {
+        $order = $this->orderRepository->getById($id);
+
+        if (!$order) {
+            abort(404);
+        }
+        $statuses = orderStatuses();
+
+        return view('dashboard.orders.show', compact('statuses', 'order'));
     }
 
 
@@ -129,5 +158,29 @@ class OrderController extends Controller
         $this->orderRepository->destroy($id);
         $this->putFlashMessage(true, 'Successfully deleted');
         return redirect()->route('orders.index');
+    }
+
+    /**
+     * @param OrderStatusRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateStatus(OrderStatusRequest $request, int $id)
+    {
+
+        $this->orderRepository->updateStatus($request->validated(), $id, Auth::id());
+
+
+        return response()->json([]);
+    }
+
+
+    /**
+     * @param int $id
+     * @return OrderStatusCommentCollection
+     */
+    public function getStatusComments(int $id)
+    {
+        return new OrderStatusCommentCollection($this->orderRepository->getStatusComments($id));
     }
 }
