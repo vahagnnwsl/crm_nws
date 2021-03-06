@@ -151,27 +151,27 @@ class UserRepository
 
         if ($user) {
 
-             if ($user->orders->count()){
-                 return [
-                   'msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $user->orders->pluck('id')->toArray()).']'
-                 ];
-             }
-
-            if ($user->orders->agents()){
+            if ($user->orders->count()) {
                 return [
-                    'msg'=>'Please before delete,delete agents where ID in array ['. implode(',', $user->agents->pluck('id')->toArray()).']'
+                    'msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $user->orders->pluck('id')->toArray()) . ']'
                 ];
             }
 
-            if ($user->orders->developers()){
+            if ($user->orders->agents()) {
                 return [
-                    'msg'=>'Please before delete,delete developers where ID in array ['. implode(',', $user->developers->pluck('id')->toArray()).']'
+                    'msg' => 'Please before delete,delete agents where ID in array [' . implode(',', $user->agents->pluck('id')->toArray()) . ']'
                 ];
             }
 
-            if ($user->orders->orderPersons()){
+            if ($user->orders->developers()) {
                 return [
-                    'msg'=>'Please before delete,delete orderPersons where ID in array ['. implode(',', $user->orderPersons->pluck('id')->toArray()).']'
+                    'msg' => 'Please before delete,delete developers where ID in array [' . implode(',', $user->developers->pluck('id')->toArray()) . ']'
+                ];
+            }
+
+            if ($user->orders->orderPersons()) {
+                return [
+                    'msg' => 'Please before delete,delete orderPersons where ID in array [' . implode(',', $user->orderPersons->pluck('id')->toArray()) . ']'
                 ];
             }
 
@@ -236,6 +236,13 @@ class UserRepository
         });
 
         return $timeline->setCollection($grouped_by_date);
+    }
 
+    /**
+     * @return User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function all()
+    {
+        return User::all();
     }
 }

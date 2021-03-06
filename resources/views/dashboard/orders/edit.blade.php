@@ -66,6 +66,38 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="developer_id">Developer * </label>
+                                            <select class="form-control" id="developer_id" name="developer_id">
+                                                <option disabled selected>Select one</option>
+                                                @foreach($developers as $developer)
+                                                    <option value="{{$developer->id}}" {{$order->developer_id === $developer->id ?' selected': ''}}>{{$developer->fullName}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('developer_id')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="team_lid_id">Team lid * </label>
+                                            <select class="form-control" id="team_lid_id" name="team_lid_id">
+                                                <option disabled selected>Select one</option>
+                                                @foreach($developers as $developer)
+                                                    <option
+                                                        value="{{$developer->id}}" {{$order->team_lid_id === $developer->id?'selected':''}}>{{$developer->fullName}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('team_lid_id')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="sources">Source *</label>
                                             <select class="form-control" id="sources" name="source">
                                                 <option disabled selected>Select one</option>

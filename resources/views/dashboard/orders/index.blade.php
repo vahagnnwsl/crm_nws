@@ -27,6 +27,9 @@
                 @if($orders->count())
 
                     <div class="card-body p-0">
+
+                        <x-filter-component :filterAttributes="$filterAttributes"/>
+
                         <table class="table table-striped projects">
                             <thead>
                             <tr>
@@ -130,3 +133,4 @@
         </div>
     </section>
 @endsection
+

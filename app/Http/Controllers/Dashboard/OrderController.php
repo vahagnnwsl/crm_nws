@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\DTO\PermissionDto;
 use App\Http\Repositories\AgentRepository;
 use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\OrderRepository;
-use App\Http\Repositories\PermissionRepository;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Http\Resources\OrderStatusCommentCollection;
-use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -49,14 +45,16 @@ class OrderController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->orderRepository->getAll();
+        $orders = $this->orderRepository->getAll($request->all());
         $statuses = orderStatuses();
+        $filterAttributes = ['order_source','developer','order_status','agent','creator'];
 
-        return view('dashboard.orders.index', compact('orders', 'statuses'));
+        return view('dashboard.orders.index', compact('orders', 'statuses','filterAttributes'));
     }
 
 
@@ -113,8 +111,9 @@ class OrderController extends Controller
         $stacks = stacksForSelect2();
         $currencies = currencies();
         $statuses = orderStatuses();
+        $developers = $this->developerRepository->getAccepted();
 
-        return view('dashboard.orders.edit', compact('statuses', 'sources', 'stacks', 'currencies', 'order', 'agents'));
+        return view('dashboard.orders.edit', compact('statuses', 'sources', 'stacks', 'currencies', 'order', 'agents', 'developers'));
 
     }
 

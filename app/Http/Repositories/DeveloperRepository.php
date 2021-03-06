@@ -77,14 +77,28 @@ class DeveloperRepository
 
     /**
      * @param int $id
+     * @return array|string[]
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): array
     {
         $developer = $this->getById($id);
 
         if ($developer) {
+
+            if ($developer->developerOrders->count()) {
+
+                return  ['msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $developer->developerOrders->pluck('id')->toArray()).']'];
+            }
+
+            if ($developer->teamLeadOrders->count()) {
+
+                return  ['msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $developer->teamLeadOrders->pluck('id')->toArray()).']'];
+            }
+
             $developer->delete();
         }
+
+        return  [];
     }
 
     /**

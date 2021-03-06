@@ -51,8 +51,7 @@
                                             <select class="form-control" id="agent" name="agent_id">
                                                 <option disabled selected>Select one</option>
                                                 @foreach($agents as $agent)
-                                                    <option
-                                                        value="{{$agent->id}}" {{old('agent_id')===$agent->id?'selected':''}}>{{$agent->fullName}}</option>
+                                                    <option value="{{$agent->id}}" {{old('agent_id') === $agent->id ? 'selected':''}}>{{$agent->fullName}}</option>
                                                 @endforeach
                                             </select>
                                             @error('agent_id')
@@ -67,8 +66,7 @@
                                             <select class="form-control" id="developer_id" name="developer_id">
                                                 <option disabled selected>Select one</option>
                                                 @foreach($developers as $developer)
-                                                    <option
-                                                        value="{{$developer->id}}" {{old('developer_id')===$developer->id?'selected':''}}>{{$developer->fullName}}</option>
+                                                    <option value="{{$developer->id}}" {{ old('developer_id') === $developer->id ?' selected': ''}}>{{$developer->fullName}}</option>
                                                 @endforeach
                                             </select>
                                             @error('developer_id')

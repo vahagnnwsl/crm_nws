@@ -37,16 +37,16 @@ class OrderRequest extends FormRequest
             'budget' => 'required_with:currency|numeric|between:1,90000|nullable',
             'description' => 'sometimes|string|nullable',
             'agent_id' => 'required|exists:App\Models\Agent,id',
-//            'team_lid_id' => ['required',
-//                Rule::exists('developers')->where(function ($query) {
-//                    $query->where([
-//                        'id' => $this->get('team_lid_id'),
-//                        'status' => DeveloperRepository::STATUS_ACCEPTED
-//                    ]);
-//                })
-//            ],
+            'team_lid_id' => ['required',
+                Rule::exists('developers','id')->where(function ($query) {
+                    $query->where([
+                        'id' => $this->get('team_lid_id'),
+                        'status' => DeveloperRepository::STATUS_ACCEPTED
+                    ]);
+                })
+            ],
             'developer_id' => ['required',
-                Rule::exists('developers')->where(function ($query) {
+                Rule::exists('developers','id')->where(function ($query) {
                     $query->where([
                         'id' => $this->get('developer_id'),
                         'status' => DeveloperRepository::STATUS_ACCEPTED

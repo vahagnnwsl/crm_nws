@@ -23,9 +23,10 @@ class OrderRepository extends Repository
 
 
     /**
+     * @param array $requestData
      * @return mixed
      */
-    public function getAll()
+    public function getAll(array $requestData)
     {
         return Order::paginate(15);
     }

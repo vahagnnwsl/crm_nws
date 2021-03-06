@@ -120,11 +120,10 @@ class DeveloperController extends Controller
      */
     public function destroy(int $id)
     {
+        $resp = $this->developerRepository->destroy($id);
+        $this->putFlashMessage($resp ? false : true, $resp ? $resp['msg'] : 'Successfully deleted');
 
-        $this->developerRepository->destroy($id);
-        $this->putFlashMessage(true, 'Successfully deleted');
         return redirect()->route('developers.index');
-
     }
 
 }

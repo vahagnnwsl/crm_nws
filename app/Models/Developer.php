@@ -42,7 +42,6 @@ class Developer extends Model
     }
 
 
-
     /**
      * @return string
      */
@@ -58,6 +57,23 @@ class Developer extends Model
     {
         return $this->hasOne(User::class, 'id', 'creator_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function developerOrders()
+    {
+        return $this->hasMany(Order::class, 'developer_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function teamLeadOrders()
+    {
+        return $this->hasMany(Order::class, 'team_lead_id', 'id');
+    }
+
 
     /**
      * @param $value

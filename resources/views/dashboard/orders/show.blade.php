@@ -46,6 +46,14 @@
                                                 <td>{{$order->agent->fullName}}</td>
                                             </tr>
                                             <tr>
+                                                <th class="pl-0 w-25" scope="row"><strong>Developer</strong></th>
+                                                <td>{{$order->developer->fullName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="pl-0 w-25" scope="row"><strong>Team lead</strong></th>
+                                                <td>{{$order->teamLead->fullName}}</td>
+                                            </tr>
+                                            <tr>
                                                 <th class="pl-0 w-25" scope="row"><strong>Source </strong></th>
                                                 <td>{{$order->source }}</td>
                                             </tr>

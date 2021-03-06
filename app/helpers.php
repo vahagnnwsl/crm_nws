@@ -13,6 +13,7 @@ if (!function_exists('orderSources')) {
      */
     function orderSources(): array
     {
+
         return json_decode(File::get(resource_path('data/settings.json')))->orderSources;
     }
 }
@@ -24,6 +25,7 @@ if (!function_exists('stacks')) {
      */
     function stacks(): array
     {
+
         return (array)json_decode(File::get(resource_path('data/settings.json')))->stacks;
     }
 }
@@ -145,6 +147,24 @@ if (!function_exists('orderStatuses')) {
             OrderRepository::STATUS_OFFER => 'OFFER',
 
         ];
+    }
+}
+
+if (!function_exists('collectionToArrayForFilter')) {
+    /**
+     * @param $collction
+     * @return string[]
+     */
+    function collectionToArrayForFilter($collction): array
+    {
+
+        $array = [];
+
+        foreach ($collction as $item) {
+            $array[$item->id] = $item->fullName;
+        }
+
+        return $array;
     }
 }
 

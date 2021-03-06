@@ -8,7 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends Model
 {
-    use HasFactory,LogsActivity;
+    use HasFactory, LogsActivity;
 
 
     protected $fillable = [
@@ -27,7 +27,7 @@ class Order extends Model
         'hash'
     ];
 
-    protected static $logAttributes = ['name', 'description', 'source','link','agent_id','status','stacks','budget','currency'];
+    protected static $logAttributes = ['name', 'description', 'source', 'link', 'agent_id', 'status', 'stacks', 'budget', 'currency'];
 
     public function setStacksAttribute($value)
     {
@@ -73,11 +73,27 @@ class Order extends Model
         return $this->hasMany(OrderPerson::class, 'order_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function developer()
+    {
+        return $this->hasOne(Developer::class, 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function teamLead()
+    {
+        return $this->hasOne(Developer::class, 'id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function statusComments() {
+    public function statusComments()
+    {
 
         return $this->hasMany(OrderStatusComment::class);
     }
