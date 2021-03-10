@@ -17,27 +17,21 @@ class Order extends Model
         'source',
         'link',
         'creator_id',
+        'expert_id',
         'developer_id',
         'team_lid_id',
         'agent_id',
         'status',
-        'stacks',
         'budget',
         'currency',
         'hash'
     ];
 
+
+    /**
+     * @var string[]
+     */
     protected static $logAttributes = ['name', 'description', 'source', 'link', 'agent_id', 'status', 'stacks', 'budget', 'currency'];
-
-    public function setStacksAttribute($value)
-    {
-        $this->attributes['stacks'] = json_encode($value);
-    }
-
-    public function getStacksAttribute($value)
-    {
-        return json_decode($value);
-    }
 
     public static function boot()
     {
@@ -76,6 +70,14 @@ class Order extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
+    public function expert()
+    {
+        return $this->hasOne(Developer::class, 'id','expert_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function developer()
     {
         return $this->hasOne(Developer::class, 'id');
@@ -86,7 +88,7 @@ class Order extends Model
      */
     public function teamLead()
     {
-        return $this->hasOne(Developer::class, 'id');
+        return $this->hasOne(Developer::class, 'id','team_lid_id');
     }
 
     /**
@@ -96,6 +98,14 @@ class Order extends Model
     {
 
         return $this->hasMany(OrderStatusComment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stacks()
+    {
+        return $this->belongsToMany(Stack::class, 'order_stacks');
     }
 
 }

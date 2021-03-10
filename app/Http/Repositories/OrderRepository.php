@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Order;
 use App\Models\OrderStatusComment;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository extends Repository
 {
@@ -20,6 +21,7 @@ class OrderRepository extends Repository
     const STATUS_FIRST_CALL = 9;
     const STATUS_SECOND_CALL = 10;
     const STATUS_OFFER = 11;
+    const STATUS_ONGOING = 12;
 
 
     /**
@@ -28,7 +30,40 @@ class OrderRepository extends Repository
      */
     public function getAll(array $requestData)
     {
-        return Order::paginate(15);
+
+        return Order::when(isset($requestData['sources']) && count($requestData['sources']), function ($q) use ($requestData) {
+            return $q->whereIn('source', $requestData['sources']);
+        })
+            ->when(isset($requestData['status']) && count($requestData['status']), function ($q) use ($requestData) {
+                return $q->whereIn('status', $requestData['status']);
+            })
+            ->when(isset($requestData['developer_id']) && count($requestData['developer_id']), function ($q) use ($requestData) {
+                return $q->where('developer_id', $requestData['developer_id']);
+            })
+            ->when(isset($requestData['agent_id']) && count($requestData['agent_id']), function ($q) use ($requestData) {
+                return $q->where('agent_id', $requestData['agent_id']);
+            })
+            ->when(isset($requestData['creator_id']) && count($requestData['creator_id']), function ($q) use ($requestData) {
+                return $q->where('creator_id', $requestData['creator_id']);
+            })
+            ->when(isset($requestData['name']), function ($q) use ($requestData) {
+                return $q->where('name', 'LIKE', "%" . $requestData['name'] . "%");
+            })
+            ->when(isset($requestData['created_at']), function ($q) use ($requestData) {
+                $date = explode(' - ', $requestData['created_at']);
+
+                if (count($date) === 2) {
+                    return $q->whereBetween('created_at', $date);
+                }
+
+                return $q;
+            })
+            ->when(isset($requestData['stacks']) && count($requestData['stacks']), function ($q) use ($requestData) {
+                return $q->whereHas('stacks', function ($subQuery) use ($requestData) {
+                    return $subQuery->whereIn('stacks.id', $requestData['stacks']);
+                });
+            })
+            ->orderbyDesc('created_at')->paginate(15);
     }
 
 
@@ -39,6 +74,18 @@ class OrderRepository extends Repository
     public function store(array $requestData)
     {
         return Order::create($requestData);
+    }
+
+    /**
+     * @param int $id
+     * @param array $stacks
+     */
+    public function syncStacks(int $id, array $stacks): void
+    {
+        $order = $this->getById($id);
+        if ($order) {
+            $order->stacks()->sync($stacks);
+        }
     }
 
 
@@ -98,8 +145,8 @@ class OrderRepository extends Repository
             'status' => orderStatuses()[$order->status]
         ];
 
-        if (isset($requestData['attachment'])){
-            $data['attachment'] =  $this->base64Upload($requestData['attachment'],'comments');
+        if (isset($requestData['attachment'])) {
+            $data['attachment'] = $this->base64Upload($requestData['attachment'], 'comments');
         }
 
         OrderStatusComment::create($data);
@@ -121,6 +168,17 @@ class OrderRepository extends Repository
         }
 
         return [];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrdersCountGroupMonthAndCreator()
+    {
+        return Order::selectRaw('DATE_FORMAT(created_at,"%m/%Y") as date, count(*) data,creator_id')
+            ->groupBy('date', 'creator_id')
+            ->orderBy('created_at')
+            ->get();
     }
 
 }

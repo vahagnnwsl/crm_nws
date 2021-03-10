@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\DeveloperRepository;
+use App\Http\Repositories\StackRepository;
 use App\Http\Requests\DeveloperRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +18,20 @@ class DeveloperController extends Controller
     protected $developerRepository;
 
     /**
+     * @var StackRepository
+     */
+    protected $stackRepository;
+
+    /**
      * DeveloperController constructor.
      * @param DeveloperRepository $developerRepository
+     * @param StackRepository $stackRepository
      */
-    public function __construct(DeveloperRepository $developerRepository)
+    public function __construct(DeveloperRepository $developerRepository, StackRepository $stackRepository)
     {
         $this->developerRepository = $developerRepository;
+
+        $this->stackRepository = $stackRepository;
     }
 
     /**
@@ -31,7 +40,9 @@ class DeveloperController extends Controller
     public function index()
     {
         $developers = $this->developerRepository->getAll();
+
         $developerStatuses = developerStatuses();
+
         return view('dashboard.developers.index', compact('developers', 'developerStatuses'));
     }
 
@@ -40,9 +51,9 @@ class DeveloperController extends Controller
      */
     public function create()
     {
-
         $developerPositions = developerPositions();
-        $stacks = stacksForSelect2();
+
+        $stacks = collectionConvertForSelect2($this->stackRepository->getAll());
 
         return view('dashboard.developers.create', compact('developerPositions', 'stacks'));
     }
@@ -54,9 +65,12 @@ class DeveloperController extends Controller
      */
     public function store(DeveloperRequest $request)
     {
+        $developer = $this->developerRepository->store(Auth::id(), $request->validated());
 
-        $this->developerRepository->store(Auth::id(), $request->validated());
+        $this->developerRepository->syncStacks($developer->id, $request['stacks']);
+
         $this->putFlashMessage(true, 'Successfully created');
+
         return redirect()->route('developers.index');
     }
 
@@ -75,7 +89,8 @@ class DeveloperController extends Controller
         $developerPositions = developerPositions();
 
         $developerStatuses = developerStatuses();
-        $stacks = stacksForSelect2();
+
+        $stacks = collectionConvertForSelect2($this->stackRepository->getAll());
 
         return view('dashboard.developers.edit', compact('developer', 'developerPositions', 'developerStatuses', 'stacks'));
     }
@@ -106,8 +121,10 @@ class DeveloperController extends Controller
      */
     public function update(DeveloperRequest $request, $id)
     {
-
         $this->developerRepository->update($id, $request->validated());
+
+        $this->developerRepository->syncStacks($id, $request['stacks']);
+
         $this->putFlashMessage(true, 'Successfully updated');
 
         return redirect()->back();

@@ -19,6 +19,11 @@ class AddField2ToOrdersTable extends Migration
 
             $table->unsignedBigInteger('team_lid_id')->nullable()->after('developer_id');
             $table->foreign('team_lid_id')->references('id')->on('developers');
+
+
+            $table->unsignedBigInteger('expert_id')->nullable()->after('team_lid_id');
+            $table->foreign('expert_id')->references('id')->on('developers');
+
         });
     }
 

@@ -35,8 +35,9 @@ class DeveloperRepository
     /**
      * @param int $creator_id
      * @param array $reqData
+     * @return mixed
      */
-    public function store(int $creator_id, array $reqData): void
+    public function store(int $creator_id, array $reqData)
     {
         $reqData['creator_id'] = $creator_id;
 
@@ -44,7 +45,8 @@ class DeveloperRepository
             $reqData['cv'] = $this->uploadCv($reqData['cv']);
         }
 
-        Developer::create($reqData);
+        return Developer::create($reqData);
+
     }
 
     /**
@@ -85,20 +87,25 @@ class DeveloperRepository
 
         if ($developer) {
 
+            if ($developer->expertOrders->count()) {
+
+                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->expertOrders->pluck('id')->toArray()) . ']'];
+            }
+
             if ($developer->developerOrders->count()) {
 
-                return  ['msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $developer->developerOrders->pluck('id')->toArray()).']'];
+                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->developerOrders->pluck('id')->toArray()) . ']'];
             }
 
             if ($developer->teamLeadOrders->count()) {
 
-                return  ['msg'=>'Please before delete,delete orders where ID in array ['. implode(',', $developer->teamLeadOrders->pluck('id')->toArray()).']'];
+                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->teamLeadOrders->pluck('id')->toArray()) . ']'];
             }
 
             $developer->delete();
         }
 
-        return  [];
+        return [];
     }
 
     /**
@@ -107,6 +114,18 @@ class DeveloperRepository
     public function getAccepted()
     {
         return Developer::whereStatus($this::STATUS_ACCEPTED)->get();
+    }
+
+    /**
+     * @param int $id
+     * @param array $stacks
+     */
+    public function syncStacks(int $id, array $stacks): void
+    {
+        $developer = $this->getById($id);
+        if ($developer) {
+            $developer->stacks()->sync($stacks);
+        }
     }
 
 }

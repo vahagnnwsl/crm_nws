@@ -20,26 +20,8 @@ class Developer extends Model
         'phone',
         'cv',
         'position',
-        'status',
-        'stacks'
+        'status'
     ];
-
-    /**
-     * @param $value
-     */
-    public function setStacksAttribute($value)
-    {
-        $this->attributes['stacks'] = json_encode($value);
-    }
-
-    /**
-     * @param $value
-     * @return mixed
-     */
-    public function getStacksAttribute($value)
-    {
-        return json_decode($value);
-    }
 
 
     /**
@@ -71,7 +53,23 @@ class Developer extends Model
      */
     public function teamLeadOrders()
     {
-        return $this->hasMany(Order::class, 'team_lead_id', 'id');
+        return $this->hasMany(Order::class, 'team_lid_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function expertOrders()
+    {
+        return $this->hasMany(Order::class, 'expert_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stacks()
+    {
+        return $this->belongsToMany(Stack::class, 'developer_stacks');
     }
 
 

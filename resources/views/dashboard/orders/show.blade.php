@@ -45,14 +45,24 @@
                                                 <th class="pl-0 w-25" scope="row"><strong>Agent</strong></th>
                                                 <td>{{$order->agent->fullName}}</td>
                                             </tr>
-                                            <tr>
-                                                <th class="pl-0 w-25" scope="row"><strong>Developer</strong></th>
-                                                <td>{{$order->developer->fullName}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pl-0 w-25" scope="row"><strong>Team lead</strong></th>
-                                                <td>{{$order->teamLead->fullName}}</td>
-                                            </tr>
+                                            @if($order->expert)
+                                                <tr>
+                                                    <th class="pl-0 w-25" scope="row"><strong>Expert</strong></th>
+                                                    <td>{{$order->expert->fullName}}</td>
+                                                </tr>
+                                            @endif
+                                            @if($order->developer)
+                                                <tr>
+                                                    <th class="pl-0 w-25" scope="row"><strong>Developer</strong></th>
+                                                    <td>{{$order->developer->fullName}}</td>
+                                                </tr>
+                                            @endif
+                                            @if($order->teamLead)
+                                                <tr>
+                                                    <th class="pl-0 w-25" scope="row"><strong>Team lead</strong></th>
+                                                    <td>{{$order->teamLead->fullName}}</td>
+                                                </tr>
+                                            @endif
                                             <tr>
                                                 <th class="pl-0 w-25" scope="row"><strong>Source </strong></th>
                                                 <td>{{$order->source }}</td>
@@ -69,7 +79,7 @@
                                                 <th class="pl-0 w-25" scope="row"><strong>Stacks </strong></th>
                                                 <td>
                                                     @foreach($order->stacks as $stack)
-                                                        {{$stack}}
+                                                        {{$stack->name}}
                                                     @endforeach
                                                 </td>
                                             </tr>
@@ -102,36 +112,36 @@
                                         <div class="col-6 col-sm-12 col-md-6 d-flex align-items-stretch flex-column">
                                             <div class="card bg-light d-flex flex-fill">
                                                 <div class="card-header text-muted border-bottom-0">
-                                                    <i class="fas fa-user-alt"></i>    {{$person->fullName}}
+                                                    <i class="fas fa-user-alt"></i> {{$person->fullName}}
                                                 </div>
                                                 <div class="card-body pt-0">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <p class="text-muted text-sm"><b>About: </b> {{$person->position ?? 'N/A'}}</p>
+                                                            <p class="text-muted text-sm">
+                                                                <b>About: </b> {{$person->position ?? 'N/A'}}</p>
                                                             <ul class="ml-4 mb-0 fa-ul text-muted">
 
 
-                                                                    <li class="small mt-1"><span class="fa-li">
+                                                                <li class="small mt-1"><span class="fa-li">
                                                                         <i class="fas fa-lg fa-phone"></i>
                                                                     </span> {{$person->phone ?? 'N/A'}}
-                                                                    </li>
+                                                                </li>
 
-                                                                    <li class="small mt-1"><span class="fa-li">
+                                                                <li class="small mt-1"><span class="fa-li">
                                                                         <i class="fas fa-lg fa-envelope"></i>
                                                                     </span> {{$person->email?? 'N/A'}}
-                                                                    </li>
+                                                                </li>
 
-                                                                    <li class="small mt-1"><span class="fa-li">
+                                                                <li class="small mt-1"><span class="fa-li">
                                                                         <i class="fab fa-lg  fa-skype"></i>
                                                                     </span> {{$person->skype?? 'N/A'}}
-                                                                    </li>
+                                                                </li>
 
 
-
-                                                                    <li class="small mt-1"><span class="fa-li">
+                                                                <li class="small mt-1"><span class="fa-li">
                                                                         <i class="fab fa-lg fa-telegram"></i>
                                                                     </span> {{$person->telegram?? 'N/A'}}
-                                                                    </li>
+                                                                </li>
 
                                                             </ul>
                                                         </div>

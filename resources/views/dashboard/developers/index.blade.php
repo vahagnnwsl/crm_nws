@@ -33,7 +33,7 @@
                                     #
                                 </th>
 
-                                <th style="width: 20%">
+                                <th style="width: 10%">
                                     Full name
                                 </th>
                                 <th style="width: 15%">
@@ -45,8 +45,10 @@
                                 <th style="width: 10%">
                                     Date
                                 </th>
-
-                                <th style="width: 15%" class="text-center">
+                                <th style="width: 15%">
+                                    Stacks
+                                </th>
+                                <th style="width: 10%" class="text-center">
                                     Status
                                 </th>
                                 <th style="width: 20%">
@@ -77,7 +79,13 @@
                                     <td>
                                         {{$developer->created_at->format('d.m.Y')}}
                                     </td>
-
+                                    <td>
+                                        @if($developer->stacks)
+                                            @foreach($developer->stacks as $stack)
+                                                <span class="badge badge-info ">{{$stack->name}}</span>
+                                            @endforeach
+                                        @endif
+                                    </td>
 
                                     <td class="project-state">
                                         {{$developerStatuses[$developer->status]}}
@@ -122,7 +130,7 @@
                         </table>
 
                     </div>
-                    {!! $developers->links('vendor.pagination') !!}
+                    {!! $developers->appends($_GET)->links('vendor.pagination') !!}
 
                 @else
                     <h1 class="text-center text-purple">No items</h1>

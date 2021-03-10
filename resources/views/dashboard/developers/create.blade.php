@@ -88,7 +88,7 @@
 
                                        <div class="form-group">
                                            <label for="person_phone">Phone</label>
-                                           <input type="number" id="person_phone" class="form-control"  name="phone"   value="{{old('phone')}}">
+                                           <input type="text" id="person_phone" class="form-control"  name="phone"   value="{{old('phone')}}">
 
                                            @error('phone')
                                            <span class="invalid-feedback d-block" role="alert">
@@ -101,8 +101,8 @@
                                            <select class="select2" style="width: 100%;" name="stacks[]" id="stacks"  multiple="multiple">
 
                                                @if(old('stacks'))
-                                                   @foreach(old('stacks') as $oldStacks)
-                                                       <option value="{{$oldStacks}}" selected>{{$oldStacks}}</option>
+                                                   @foreach(getOldStacksForSelect2(old('stacks')) as $oldStacks)
+                                                       <option value="{{$oldStacks['id']}}" selected>{{$oldStacks['text']}}</option>
                                                    @endforeach
                                                @endif
                                            </select>

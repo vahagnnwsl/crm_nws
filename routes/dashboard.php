@@ -66,6 +66,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/developers/{id}', 'DeveloperController@destroy')->name('developers.destroy')->middleware('permission:developer_create_update_delete');
 
 
+
+    Route::get('/statistic', 'StatisticController@index')->name('statistic.index');
+
+
 });
 
 

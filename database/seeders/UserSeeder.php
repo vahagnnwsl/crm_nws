@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
 
+
         $admin = User::create([
             'first_name' => 'Vladimir',
             'last_name' => 'Ghukasyan',
@@ -29,6 +30,11 @@ class UserSeeder extends Seeder
         ]);
 
         $admin->assignRole('Admin');
+
+        User::factory()
+            ->count(7)
+            ->create();
+
 
     }
 }

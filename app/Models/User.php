@@ -33,6 +33,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'invitation_token',
+        'color'
     ];
 
     /**

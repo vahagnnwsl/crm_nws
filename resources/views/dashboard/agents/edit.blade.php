@@ -94,7 +94,7 @@
 
                                 <div class="form-group">
                                     <label for="person_phone">Phone</label>
-                                    <input type="number" id="person_phone" class="form-control"  name="phone" value="{{$agent->phone}}">
+                                    <input type="text" id="person_phone" class="form-control"  name="phone" value="{{$agent->phone}}">
 
                                     @error('phone')
                                     <span class="invalid-feedback d-block" role="alert">

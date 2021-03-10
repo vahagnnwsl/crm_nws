@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\AgentRepository;
 use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\OrderRepository;
+use App\Http\Repositories\StackRepository;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Http\Resources\OrderStatusCommentCollection;
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-
 
     /**
      * @var OrderRepository
@@ -32,16 +32,23 @@ class OrderController extends Controller
     protected $developerRepository;
 
     /**
+     * @var StackRepository
+     */
+    protected $stackRepository;
+
+    /**
      * OrderController constructor.
      * @param OrderRepository $orderRepository
      * @param AgentRepository $agentRepository
      * @param DeveloperRepository $developerRepository
+     * @param StackRepository $stackRepository
      */
-    public function __construct(OrderRepository $orderRepository, AgentRepository $agentRepository, DeveloperRepository $developerRepository)
+    public function __construct(OrderRepository $orderRepository, AgentRepository $agentRepository, DeveloperRepository $developerRepository, StackRepository $stackRepository)
     {
         $this->orderRepository = $orderRepository;
         $this->agentRepository = $agentRepository;
         $this->developerRepository = $developerRepository;
+        $this->stackRepository = $stackRepository;
     }
 
     /**
@@ -50,11 +57,12 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+
         $orders = $this->orderRepository->getAll($request->all());
         $statuses = orderStatuses();
-        $filterAttributes = ['order_source','developer','order_status','agent','creator'];
+        $filterAttributes = ['order_source', 'developer', 'order_status', 'agent', 'creator', 'created', 'name', 'stacks'];
 
-        return view('dashboard.orders.index', compact('orders', 'statuses','filterAttributes'));
+        return view('dashboard.orders.index', compact('orders', 'statuses', 'filterAttributes'));
     }
 
 
@@ -65,11 +73,14 @@ class OrderController extends Controller
     {
 
         $sources = orderSources();
-        $stacks = stacksForSelect2();
+
         $currencies = currencies();
 
         $developers = $this->developerRepository->getAccepted();
+
         $agents = $this->agentRepository->getAll();
+
+        $stacks = collectionConvertForSelect2($this->stackRepository->getAll());
 
         return view('dashboard.orders.create', compact('sources', 'stacks', 'currencies', 'agents', 'developers'));
 
@@ -84,9 +95,12 @@ class OrderController extends Controller
     {
 
         $data = $request->validated();
+
         $data['creator_id'] = Auth::id();
 
         $order = $this->orderRepository->store($data);
+
+        $this->orderRepository->syncStacks($order->id, $data['stacks']);
 
         $this->putFlashMessage(true, 'Successfully created');
 
@@ -107,10 +121,15 @@ class OrderController extends Controller
         }
 
         $agents = $this->agentRepository->getAll();
+
         $sources = orderSources();
-        $stacks = stacksForSelect2();
+
+        $stacks = collectionConvertForSelect2($this->stackRepository->getAll());
+
         $currencies = currencies();
+
         $statuses = orderStatuses();
+
         $developers = $this->developerRepository->getAccepted();
 
         return view('dashboard.orders.edit', compact('statuses', 'sources', 'stacks', 'currencies', 'order', 'agents', 'developers'));
@@ -129,6 +148,7 @@ class OrderController extends Controller
         if (!$order) {
             abort(404);
         }
+
         $statuses = orderStatuses();
 
         return view('dashboard.orders.show', compact('statuses', 'order'));
@@ -144,7 +164,11 @@ class OrderController extends Controller
     {
 
         $this->orderRepository->update($request->validated(), $id);
+
+        $this->orderRepository->syncStacks($id, $request['stacks']);
+
         $this->putFlashMessage(true, 'Successfully updated');
+
         return redirect()->route('orders.edit', $id);
     }
 
@@ -155,7 +179,9 @@ class OrderController extends Controller
     public function destroy(int $id)
     {
         $this->orderRepository->destroy($id);
+
         $this->putFlashMessage(true, 'Successfully deleted');
+
         return redirect()->route('orders.index');
     }
 
@@ -168,7 +194,6 @@ class OrderController extends Controller
     {
 
         $this->orderRepository->updateStatus($request->validated(), $id, Auth::id());
-
 
         return response()->json([]);
     }

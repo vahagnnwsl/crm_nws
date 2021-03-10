@@ -245,4 +245,12 @@ class UserRepository
     {
         return User::all();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAllWithOrdersCount()
+    {
+        return User::withCount('orders')->get();
+    }
 }

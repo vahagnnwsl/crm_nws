@@ -18,58 +18,6 @@ if (!function_exists('orderSources')) {
     }
 }
 
-if (!function_exists('stacks')) {
-
-    /**
-     * @return array
-     */
-    function stacks(): array
-    {
-
-        return (array)json_decode(File::get(resource_path('data/settings.json')))->stacks;
-    }
-}
-
-
-if (!function_exists('stacksForSelect2')) {
-
-    /**
-     * @return array
-     */
-
-    function stacksForSelect2(): array
-    {
-        $stacks = [];
-
-        foreach (stacks() as $key => $stack) {
-            array_push($stacks, [
-                'text' => $key,
-                'children' => collect($stack)->map(function ($item) {
-                    return [
-                        'id' => $item,
-                        'text' => $item
-                    ];
-                })
-            ]);
-        }
-
-        return $stacks;
-    }
-}
-
-
-if (!function_exists('stacksList')) {
-
-    /**
-     * @return array
-     */
-
-    function stacksList(): array
-    {
-        return Arr::collapse(stacks());
-    }
-}
-
 if (!function_exists('currencies')) {
 
     /**
@@ -145,6 +93,7 @@ if (!function_exists('orderStatuses')) {
             OrderRepository::STATUS_FIRST_CALL => 'FIRST_CALL',
             OrderRepository::STATUS_SECOND_CALL => 'SECOND_CALL',
             OrderRepository::STATUS_OFFER => 'OFFER',
+            OrderRepository::STATUS_ONGOING => 'ONGOING',
 
         ];
     }
@@ -161,11 +110,88 @@ if (!function_exists('collectionToArrayForFilter')) {
         $array = [];
 
         foreach ($collction as $item) {
-            $array[$item->id] = $item->fullName;
+            $array[$item->id] = $item->fullName ?? $item->name;
         }
 
         return $array;
     }
 }
 
+if (!function_exists('toAssoc')) {
+    /**
+     * @param array $array
+     * @return array
+     */
+    function toAssoc(array $array): array
+    {
 
+        $newArray = [];
+
+        foreach ($array as $item) {
+            $newArray[$item] = $item;
+        }
+
+        return $newArray;
+    }
+}
+
+if (!function_exists('collectionConvertForSelect2')) {
+
+    /**
+     * @param object $collection
+     * @return array
+     */
+    function collectionConvertForSelect2(object $collection): array
+    {
+
+        $array = [];
+
+        foreach ($collection as $item) {
+            array_push($array, [
+                'id' => $item->id,
+                'text' => $item->name ?? $item->fullName
+            ]);
+        }
+
+        return $array;
+    }
+}
+
+if (!function_exists('arrayConvertForSelect2')) {
+
+    /**
+     * @param array $array
+     * @param false $t
+     * @return array
+     */
+    function arrayConvertForSelect2(array $array, $t = false): array
+    {
+
+        $newArray = [];
+
+        foreach ($array as $key => $item) {
+            array_push($newArray, [
+                'id' => $t ? $key : $item,
+                'text' => $item
+            ]);
+        }
+
+        return $newArray;
+    }
+}
+
+if (!function_exists('getOldStacksForSelect2')) {
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    function getOldStacksForSelect2(array $array): array
+    {
+        if (count($array)) {
+            return collectionConvertForSelect2((new \App\Http\Repositories\StackRepository())->getByIdes($array));
+        }
+
+        return [];
+    }
+}

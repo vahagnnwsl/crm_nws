@@ -54,6 +54,14 @@ class PermissionSeeder extends Seeder
         ]);
 
         Permission::create([
+            'name' => 'order_set_dev_lead_expert'
+        ]);
+
+        Permission::create([
+            'name' => 'order_update_status_to_ongoing'
+        ]);
+
+        Permission::create([
             'name' => 'order_update_status'
         ]);
 

@@ -89,6 +89,15 @@
                 </li>
                 @endcan
 
+                <li class="nav-item">
+                    <a href="{{route('statistic.index')}}"
+                       class="nav-link {{request()->is('dashboard/statistic*') ?'active':''}}">
+                        <i class="fa fa-chart-bar nav-icon"></i>
+                        <p>Statistic</p>
+                    </a>
+                </li>
+
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

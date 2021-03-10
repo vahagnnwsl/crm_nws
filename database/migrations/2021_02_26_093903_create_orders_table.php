@@ -22,7 +22,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('creator_id');
             $table->foreign('creator_id')->references('id')->on('users');
             $table->tinyInteger('status')->default(0);
-            $table->text('stacks')->nullable();
             $table->integer('budget')->nullable();
             $table->string('currency')->nullable();
             $table->string('hash')->nullable();

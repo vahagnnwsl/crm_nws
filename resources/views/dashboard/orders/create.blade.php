@@ -62,7 +62,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="developer_id">Developer * </label>
+                                            <label for="developer_id">Developer  </label>
                                             <select class="form-control" id="developer_id" name="developer_id">
                                                 <option disabled selected>Select one</option>
                                                 @foreach($developers as $developer)
@@ -75,10 +75,24 @@
                                             </span>
                                             @enderror
                                         </div>
+                                        <div class="form-group">
+                                            <label for="expert_id">Expert  </label>
+                                            <select class="form-control" id="expert_id" name="expert_id">
+                                                <option disabled selected>Select one</option>
+                                                @foreach($developers as $developer)
+                                                    <option value="{{$developer->id}}" {{ old('expert_id') === $developer->id ?' selected': ''}}>{{$developer->fullName}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('expert_id')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                               <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
 
 
                                         <div class="form-group">
-                                            <label for="team_lid_id">Team lid * </label>
+                                            <label for="team_lid_id">Team lid  </label>
                                             <select class="form-control" id="team_lid_id" name="team_lid_id">
                                                 <option disabled selected>Select one</option>
                                                 @foreach($developers as $developer)
@@ -170,8 +184,8 @@
                                             <select class="select2" style="width: 100%;" name="stacks[]" id="stacks"  multiple="multiple">
 
                                                 @if(old('stacks'))
-                                                    @foreach(old('stacks') as $oldStacks)
-                                                       <option value="{{$oldStacks}}" selected>{{$oldStacks}}</option>
+                                                    @foreach(getOldStacksForSelect2(old('stacks')) as $oldStacks)
+                                                       <option value="{{$oldStacks['id']}}" selected>{{$oldStacks['text']}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>

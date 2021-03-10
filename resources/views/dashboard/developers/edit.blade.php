@@ -111,7 +111,7 @@
 
                                         <div class="form-group">
                                             <label for="person_phone">Phone</label>
-                                            <input type="number" id="person_phone" class="form-control" name="phone"
+                                            <input type="text" id="person_phone" class="form-control" name="phone"
                                                    value="{{$developer->phone}}">
 
                                             @error('phone')
@@ -128,7 +128,7 @@
 
                                                 @if($developer->stacks)
                                                     @foreach($developer->stacks as $stack)
-                                                        <option value="{{$stack}}" selected>{{$stack}}</option>
+                                                        <option value="{{$stack->id}}" selected>{{$stack->name}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>

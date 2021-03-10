@@ -24,11 +24,12 @@
                     </div>
                 @endcan
 
+                <x-filter-component :filterAttributes="$filterAttributes"/>
+
                 @if($orders->count())
 
                     <div class="card-body p-0">
 
-                        <x-filter-component :filterAttributes="$filterAttributes"/>
 
                         <table class="table table-striped projects">
                             <thead>
@@ -45,16 +46,21 @@
                                 <th>
                                     Source
                                 </th>
-                                <th style="width: 20%">
+                                <th style="width: 15%">
                                     Stacks
                                 </th>
-                                <th>
+                                <th style="width: 15%">
                                     Link
                                 </th>
                                 <th style="width: 8%" class="text-center">
                                     Status
                                 </th>
-                                <th style="width: 20%">
+                                <th style="width: 10%" class="text-center">
+                                    Created
+                                </th>
+                                <th style="width: 20%;font-size: 1.2rem" class="text-right">
+                                    <span class="text-purple font-weight-bold">Total: {{$orders->total()}}</span>
+
                                 </th>
                             </tr>
                             </thead>
@@ -80,7 +86,7 @@
                                     <td>
                                         @if($order->stacks)
                                             @foreach($order->stacks as $stack)
-                                                <span class="badge badge-info ">{{$stack}}</span>
+                                                <span class="badge badge-info ">{{$stack->name}}</span>
                                             @endforeach
                                         @endif
                                     </td>
@@ -89,6 +95,9 @@
                                     </td>
                                     <td class="project_progress text-center">
                                         {{$statuses[$order->status]}}
+                                    </td>
+                                    <td class="project_progress text-center">
+                                        {{$order->created_at->format('d M,Y')}}
                                     </td>
                                     <td class="project-actions text-right">
 
@@ -124,10 +133,9 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $orders->links('vendor.pagination') !!}
+                    {!! $orders->appends($_GET)->links('vendor.pagination') !!}
                 @else
                     <h1 class="text-center text-purple">No items</h1>
-
                 @endif
             </div>
         </div>

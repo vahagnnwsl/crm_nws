@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Repositories\StackRepository;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeveloperRequest extends FormRequest
@@ -28,7 +29,7 @@ class DeveloperRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'sometimes|string|max:255|nullable',
-            'stacks' => 'array|min:1|required||in:' . implode(',', stacksList()),
+            'stacks' => 'array|min:1|required||in:' . implode(',', (new StackRepository())->pluckFiled('id')),
             'phone' => 'sometimes|string|max:255|nullable',
             'cv' => 'sometimes|mimes:doc,pdf,docx|max:4072|nullable',
             'position' => 'required||in:' . implode(',', developerPositions()),

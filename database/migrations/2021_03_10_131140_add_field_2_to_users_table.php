@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldToDevelopersTable extends Migration
+class AddField2ToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddFieldToDevelopersTable extends Migration
      */
     public function up()
     {
-        Schema::table('developers', function (Blueprint $table) {
-            $table->text('stacks')->nullable();
-
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('color')->nullable()->after('remember_token');
         });
     }
 
@@ -26,7 +25,7 @@ class AddFieldToDevelopersTable extends Migration
      */
     public function down()
     {
-        Schema::table('developers', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }
