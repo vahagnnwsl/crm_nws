@@ -27,7 +27,8 @@ class ProfileRequest extends FormRequest
        return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'avatar' => 'mimes:jpg,bmp,png|max:2048'
+            'avatar' => 'mimes:jpg,bmp,png|max:2048',
+            'color' => 'required|string|max:255'
         ];
 
 

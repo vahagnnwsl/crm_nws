@@ -1,5 +1,8 @@
 @extends('dashboard.layouts')
+@push('css')
+    <link rel="stylesheet" href="/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
 
+@endpush
 @section('sub_content')
     <section class="content-header">
         <div class="container-fluid">
@@ -71,6 +74,26 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Color :</label>
+
+                            <div class="input-group my-colorpicker2 col-sm-10">
+                                <input type="text" class="form-control colorpicker" name="color" value="{{\Illuminate\Support\Facades\Auth::user()->color}}">
+
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-square"></i></span>
+                                </div>
+                            </div>
+                            @error('color')
+                            <span class="invalid-feedback d-block" role="alert">
+                                                                  <strong>{{ $message }}</strong>
+                                                            </span>
+                            @enderror
+
+                        </div>
+                            <!-- /.input group -->
+
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
                                 <button type="submit" class="btn btn-danger">Submit</button>
@@ -89,4 +112,17 @@
 
 
 @endsection
+@push('js')
+    <script src="/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 
+    <script>
+       $(document).ready(function (){
+           $('.my-colorpicker2').colorpicker()
+           $('.input-group-text').css({color : "{{\Illuminate\Support\Facades\Auth::user()->color}}"})
+
+           $('.my-colorpicker2').on('colorpickerChange', function(event) {
+               $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+           })
+       })
+    </script>
+@endpush
