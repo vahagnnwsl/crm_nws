@@ -67,7 +67,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-    Route::get('/statistic', 'StatisticController@index')->name('statistic.index');
+    Route::get('/statistic/orders', 'StatisticController@indexOrders')->name('statistic.indexOrders');
+    Route::get('/statistic/users', 'StatisticController@indexUsers')->name('statistic.indexUsers');
+
+    Route::get('/statistic/users-orders', 'StatisticController@getUsersOrders');
+    Route::get('/statistic/users-ordersGroupByMonth', 'StatisticController@getUsersOrdersGroupByMonth');
+    Route::get('/statistic/users-ordersGroupByStatus', 'StatisticController@getUsersOrdersGroupByStatus');
 
 
 });

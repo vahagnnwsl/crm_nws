@@ -89,12 +89,29 @@
                 </li>
                 @endcan
 
-                <li class="nav-item">
-                    <a href="{{route('statistic.index')}}"
-                       class="nav-link {{request()->is('dashboard/statistic*') ?'active':''}}">
-                        <i class="fa fa-chart-bar nav-icon"></i>
-                        <p>Statistic</p>
+                <li class="nav-item  {{request()->is('dashboard/statistic*') ?'menu-is-opening menu-open':''}}">
+                    <a href="#" class="nav-link  {{request()->is('dashboard/statistic*') ?'active':''}}">
+                        <i class="nav-icon fa fa-chart-bar"></i>
+                        <p>
+                            Statistic
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="{{route('statistic.indexUsers')}}" class="nav-link {{request()->is('dashboard/statistic/users*') ?'active':''}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{request()->is('dashboard/statistic/developers*') ?'active':''}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Developers</p>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
 

@@ -30,7 +30,11 @@ class StatisticRepository
         $this->orderRepository = $orderRepository;
     }
 
-    public function getUsersOrdersByAllTime(): array
+    /**
+     * @param null $date
+     * @return array[]
+     */
+    public function getUsersOrders($date = null): array
     {
         $array = [
             'labels' => [],
@@ -39,7 +43,7 @@ class StatisticRepository
         ];
 
 
-        foreach ($this->userRepository->getAllWithOrdersCount() as $user) {
+        foreach ($this->userRepository->getAllWithOrdersCount($date) as $user) {
             array_push($array['labels'], $user->fullName);
             array_push($array['backgroundColor'], $user->color);
             array_push($array['data'], $user->orders_count);
@@ -48,7 +52,11 @@ class StatisticRepository
         return $array;
     }
 
-    public function getUsersOrdersGroupMonth(): array
+    /**
+     * @param null $date
+     * @return array
+     */
+    public function getUsersOrdersGroupMonth($date = null): array
     {
 
         $array = [
@@ -56,7 +64,7 @@ class StatisticRepository
             'labels' => [],
         ];
 
-        $data = $this->orderRepository->getOrdersCountGroupMonthAndCreator();
+        $data = $this->orderRepository->getOrdersCountGroupMonthAndCreator($date);
 
         foreach ($data as $item) {
             if (!isset($array['data'][$item->creator_id])) {
@@ -85,6 +93,60 @@ class StatisticRepository
         }
 
 
+        return [
+            'data' => $arr,
+            'labels' => $array['labels']
+        ];
+    }
+
+    /**\
+     * @param null $date
+     * @return array
+     */
+    public function getUsersOrdersGroupByStatus($date = null)
+    {
+
+        $array = [
+            'data' => [],
+            'labels' => [],
+        ];
+
+        $data = $this->orderRepository->getOrdersCountGroupMonthAndStatuses($date);
+        foreach (orderStatuses() as $s) {
+            array_push($array['labels'], $s);
+
+        }
+
+        foreach ($data as $item) {
+
+
+            if (!isset($array['data'][$item->creator_id])) {
+                $array['data'][$item->creator_id] = [
+                    'label' => '',
+                    'backgroundColor' => '',
+                    'data' => [],
+                ];
+                foreach (orderStatuses() as $key => $s) {
+                    $array['data'][$item->creator_id]['data'][$key] = 0;
+                }
+            }
+
+
+
+            $array['data'][$item->creator_id]['label'] = $item->creator->fullName;
+            $array['data'][$item->creator_id]['backgroundColor'] = $item->creator->color;
+
+
+            $array['data'][$item->creator_id]['data'][$item->status] = $item->data;
+
+        }
+
+
+        $arr = [];
+
+        foreach ($array['data'] as $item) {
+            array_push($arr, $item);
+        }
 
         return [
             'data' => $arr,

@@ -244,6 +244,7 @@
 
     };
 
+    const bus = new Vue();
 
     var app = new Vue({
         el: "#app",

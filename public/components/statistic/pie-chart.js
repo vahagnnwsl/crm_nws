@@ -1,4 +1,4 @@
-Vue.component('chart-users-order-statistic-all-time', {
+Vue.component('pie-chart', {
     extends: VueChartJs.Pie,
     props: ['data'],
     data: function () {
@@ -24,10 +24,20 @@ Vue.component('chart-users-order-statistic-all-time', {
     },
     mounted() {
 
-        this.chartData.datasets[0].backgroundColor = this.data.backgroundColor;
-        this.chartData.datasets[0].data = this.data.data;
-        this.chartData.labels = this.data.labels;
+        this.setData(this.data);
 
-        this.renderChart(this.chartData, this.options)
+        bus.$on('update-pie-chart', (data) => {
+            this.setData(data);
+        })
+
+
+    },
+    methods: {
+        setData: function (data) {
+            this.chartData.datasets[0].backgroundColor = data.backgroundColor;
+            this.chartData.datasets[0].data = data.data;
+            this.chartData.labels = data.labels;
+            this.renderChart(this.chartData, this.options)
+        }
     }
 })

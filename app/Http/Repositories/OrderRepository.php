@@ -171,12 +171,27 @@ class OrderRepository extends Repository
     }
 
     /**
+     * @param null $date
      * @return mixed
      */
-    public function getOrdersCountGroupMonthAndCreator()
+    public function getOrdersCountGroupMonthAndCreator($date = null)
     {
         return Order::selectRaw('DATE_FORMAT(created_at,"%m/%Y") as date, count(*) data,creator_id')
+            ->when($date && count($date) == 2 && $date[0] !== 'null' && $date[1] !== 'null', function ($subQuery) use ($date) {
+                $subQuery->whereBetween('created_at', $date);
+            })
             ->groupBy('date', 'creator_id')
+            ->orderBy('created_at')
+            ->get();
+    }
+
+    public function getOrdersCountGroupMonthAndStatuses($date = null) {
+
+        return Order::selectRaw('status, count(*) data,creator_id')
+            ->when($date && count($date) == 2 && $date[0] !== 'null' && $date[1] !== 'null', function ($subQuery) use ($date) {
+                $subQuery->whereBetween('created_at', $date);
+            })
+            ->groupBy('status', 'creator_id')
             ->orderBy('created_at')
             ->get();
     }

@@ -247,10 +247,19 @@ class UserRepository
     }
 
     /**
+     * @param null $date
      * @return mixed
      */
-    public function getAllWithOrdersCount()
+    public function getAllWithOrdersCount($date = null)
     {
-        return User::withCount('orders')->get();
+
+
+        return User::withCount([
+            'orders' => function ($q) use ($date) {
+                $q->when($date && count($date) == 2 && $date[0] !== 'null' && $date[1] !== 'null', function ($subQuery) use ($date) {
+                    $subQuery->whereBetween('created_at', $date);
+                });
+            }
+        ])->get();
     }
 }
