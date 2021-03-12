@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/statistic/users-orders', 'StatisticController@getUsersOrders');
     Route::get('/statistic/users-ordersGroupByMonth', 'StatisticController@getUsersOrdersGroupByMonth');
     Route::get('/statistic/users-ordersGroupByStatus', 'StatisticController@getUsersOrdersGroupByStatus');
+    Route::get('/statistic/users-ordersGroupByStatus', 'StatisticController@getUsersOrdersGroupByStatus');
+    Route::get('/statistic/users-singleUserOrdersGroupByStatus', 'StatisticController@getSingleUserOrdersGroupByStatus');
 
 
 });

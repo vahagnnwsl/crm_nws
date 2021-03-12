@@ -1,4 +1,4 @@
-Vue.component('pie-chart', {
+Vue.component('pie2-chart', {
     extends: VueChartJs.Pie,
     props: ['data'],
     data: function () {
@@ -19,13 +19,14 @@ Vue.component('pie-chart', {
                 maintainAspectRatio: false
             }
         }
-
-
+    },
+    watch: {
+        data: function (data) {
+            this.setData(data);
+        }
     },
     mounted() {
-
         this.setData(this.data);
-
     },
     methods: {
         setData: function (data) {

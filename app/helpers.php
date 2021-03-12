@@ -99,6 +99,18 @@ if (!function_exists('orderStatuses')) {
     }
 }
 
+if (!function_exists('orderColors')) {
+
+    /**
+     * @return array
+     */
+    function orderColors(): array
+    {
+
+        return OrderRepository::$COLORS;
+    }
+}
+
 if (!function_exists('collectionToArrayForFilter')) {
     /**
      * @param $collction

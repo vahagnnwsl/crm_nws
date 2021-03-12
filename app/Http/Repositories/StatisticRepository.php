@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\Models\Order;
 use App\Models\Stack;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class StatisticRepository
 {
@@ -28,6 +29,39 @@ class StatisticRepository
     {
         $this->userRepository = $userRepository;
         $this->orderRepository = $orderRepository;
+    }
+
+    /**
+     * @param null $date
+     * @return array
+     */
+    public function getSingleUserOrdersGroupByStatus($date = null): array
+    {
+
+        $array = [];
+
+        $data = $this->orderRepository->getOrdersCountGroupMonthAndStatuses($date);
+
+        foreach ($data as $item) {
+            if (!isset($array[$item->creator_id])) {
+                $array[$item->creator_id] = [
+                    'labels' => Arr::flatten(orderStatuses()),
+                    'backgroundColor' => orderColors(),
+                    'data' => [],
+                    'creator' => $item->creator->fullName,
+                ];
+                foreach (orderStatuses() as $key => $s) {
+                    $array[$item->creator_id]['data'][$key] = 0;
+                }
+            }
+            $array[$item->creator_id]['data'][$item->status] = $item->data;
+        }
+
+        $array = array_values($array);
+
+        return [
+            'data' => $array,
+        ];
     }
 
     /**
@@ -130,7 +164,6 @@ class StatisticRepository
                     $array['data'][$item->creator_id]['data'][$key] = 0;
                 }
             }
-
 
 
             $array['data'][$item->creator_id]['label'] = $item->creator->fullName;

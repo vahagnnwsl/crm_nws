@@ -14,9 +14,9 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <user-orders></user-orders>
-                            <user-orders-group-by-month></user-orders-group-by-month>
-                            <user-orders-group-by-status></user-orders-group-by-status>
+
+                               <user-order></user-order>
+
                         </div>
                     </div>
                 </div>
@@ -30,17 +30,16 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/vue2-datepicker@3.9.0/index.min.js"></script>
     <script src="/plugins/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
     <script src="https://unpkg.com/vuejs-datepicker/dist/locale/translations/fr.js"></script>
 
-    <script src="/components/statistic/pie-chart.js"></script>
-    <script src="/components/statistic/bar-chart.js"></script>
+    <script src="/components/statistic/pie2-chart.js"></script>
 
-    <script src="/components/statistic/user/user-orders.js"></script>
-    <script src="/components/statistic/user/user-orders-group-by-month.js"></script>
-    <script src="/components/statistic/user/user-orders-group-by-status.js"></script>
+    <script src="/components/statistic/user/user-order.js"></script>
 
 
 @endpush
+

@@ -28,17 +28,14 @@ class StatisticController extends Controller
      */
     public function indexOrders()
     {
-
         return view('dashboard.statistic.index-orders');
     }
-
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function indexUsers()
     {
-
         return view('dashboard.statistic.index-users');
     }
 
@@ -51,7 +48,6 @@ class StatisticController extends Controller
         return response()->json($this->statisticRepository->getUsersOrders($request->get('date')));
     }
 
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -61,7 +57,6 @@ class StatisticController extends Controller
         return response()->json($this->statisticRepository->getUsersOrdersGroupMonth($request->get('date')));
     }
 
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -70,4 +65,16 @@ class StatisticController extends Controller
     {
         return response()->json($this->statisticRepository->getUsersOrdersGroupByStatus($request->get('date')));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSingleUserOrdersGroupByStatus(Request $request)
+    {
+        return response()->json($this->statisticRepository->getSingleUserOrdersGroupByStatus($request->get('date')));
+    }
+
 }
+
+

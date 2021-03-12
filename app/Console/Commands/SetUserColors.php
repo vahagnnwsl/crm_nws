@@ -31,7 +31,7 @@ class SetUserColors extends Command
         parent::__construct();
     }
 
-    protected $colors = [
+    protected static $COLORS = [
         'red',
         'blue',
         'green',

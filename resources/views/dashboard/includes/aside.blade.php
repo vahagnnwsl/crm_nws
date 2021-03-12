@@ -99,15 +99,15 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: none;">
                         <li class="nav-item">
-                            <a href="{{route('statistic.indexUsers')}}" class="nav-link {{request()->is('dashboard/statistic/users*') ?'active':''}}">
+                            <a href="{{route('statistic.indexOrders')}}" class="nav-link {{request()->is('dashboard/statistic/orders*') ?'active':''}}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Users</p>
+                                <p>Orders</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{request()->is('dashboard/statistic/developers*') ?'active':''}}">
+                            <a href="{{route('statistic.indexUsers')}}" class="nav-link {{request()->is('dashboard/statistic/users*') ?'active':''}}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Developers</p>
+                                <p>Users</p>
                             </a>
                         </li>
 

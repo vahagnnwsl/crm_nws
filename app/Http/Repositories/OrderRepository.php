@@ -23,6 +23,10 @@ class OrderRepository extends Repository
     const STATUS_OFFER = 11;
     const STATUS_ONGOING = 12;
 
+    public static $COLORS = [
+        'red','blue','grey','green','black','orange','brown','yellow','purple', 'pink','firebrick','cornflowerblue','yellowgreen'
+    ];
+
 
     /**
      * @param array $requestData
@@ -87,7 +91,6 @@ class OrderRepository extends Repository
             $order->stacks()->sync($stacks);
         }
     }
-
 
     /**
      * @param int $id
@@ -170,6 +173,7 @@ class OrderRepository extends Repository
         return [];
     }
 
+
     /**
      * @param null $date
      * @return mixed
@@ -185,6 +189,10 @@ class OrderRepository extends Repository
             ->get();
     }
 
+    /**
+     * @param null $date
+     * @return mixed
+     */
     public function getOrdersCountGroupMonthAndStatuses($date = null) {
 
         return Order::selectRaw('status, count(*) data,creator_id')
