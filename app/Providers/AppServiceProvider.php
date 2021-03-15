@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('base64image', function ($attribute, $value, $parameters, $validator) {
             $explode = explode(',', $value);
-            $allow = ['png', 'jpg', 'svg'];
+            $allow = ['png', 'jpg', 'svg','jpeg'];
             $format = str_replace(
                 [
                     'data:image/',

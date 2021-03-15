@@ -178,9 +178,9 @@ class OrderController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->orderRepository->destroy($id);
+        $resp =$this->orderRepository->destroy($id);
 
-        $this->putFlashMessage(true, 'Successfully deleted');
+        $this->putFlashMessage($resp ? false : true, $resp ? $resp['msg'] : 'Successfully deleted');
 
         return redirect()->route('orders.index');
     }

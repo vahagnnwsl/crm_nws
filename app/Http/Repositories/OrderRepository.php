@@ -23,53 +23,34 @@ class OrderRepository extends Repository
     const STATUS_OFFER = 11;
     const STATUS_ONGOING = 12;
 
-    public static $COLORS = [
-        'red','blue','grey','green','black','orange','brown','yellow','purple', 'pink','firebrick','cornflowerblue','yellowgreen'
-    ];
-
-
     /**
-     * @param array $requestData
-     * @return mixed
+     * @return string
      */
-    public function getAll(array $requestData)
+    public function model()
     {
-
-        return Order::when(isset($requestData['sources']) && count($requestData['sources']), function ($q) use ($requestData) {
-            return $q->whereIn('source', $requestData['sources']);
-        })
-            ->when(isset($requestData['status']) && count($requestData['status']), function ($q) use ($requestData) {
-                return $q->whereIn('status', $requestData['status']);
-            })
-            ->when(isset($requestData['developer_id']) && count($requestData['developer_id']), function ($q) use ($requestData) {
-                return $q->where('developer_id', $requestData['developer_id']);
-            })
-            ->when(isset($requestData['agent_id']) && count($requestData['agent_id']), function ($q) use ($requestData) {
-                return $q->where('agent_id', $requestData['agent_id']);
-            })
-            ->when(isset($requestData['creator_id']) && count($requestData['creator_id']), function ($q) use ($requestData) {
-                return $q->where('creator_id', $requestData['creator_id']);
-            })
-            ->when(isset($requestData['name']), function ($q) use ($requestData) {
-                return $q->where('name', 'LIKE', "%" . $requestData['name'] . "%");
-            })
-            ->when(isset($requestData['created_at']), function ($q) use ($requestData) {
-                $date = explode(' - ', $requestData['created_at']);
-
-                if (count($date) === 2) {
-                    return $q->whereBetween('created_at', $date);
-                }
-
-                return $q;
-            })
-            ->when(isset($requestData['stacks']) && count($requestData['stacks']), function ($q) use ($requestData) {
-                return $q->whereHas('stacks', function ($subQuery) use ($requestData) {
-                    return $subQuery->whereIn('stacks.id', $requestData['stacks']);
-                });
-            })
-            ->orderbyDesc('created_at')->paginate(15);
+        return Order::class;
     }
 
+    /**
+     * @var string[]
+     */
+    public static $COLORS = [
+        'red', 'blue', 'grey', 'green', 'black', 'orange', 'brown', 'yellow', 'purple', 'pink', 'firebrick', 'cornflowerblue', 'yellowgreen'
+    ];
+
+    /**
+     * @var ProjectRepository
+     */
+    protected $projectRepository;
+
+    /**
+     * OrderRepository constructor.
+     * @param ProjectRepository $projectRepository \
+     */
+    public function __construct(ProjectRepository $projectRepository)
+    {
+        $this->projectRepository = $projectRepository;
+    }
 
     /**
      * @param array $requestData
@@ -77,7 +58,7 @@ class OrderRepository extends Repository
      */
     public function store(array $requestData)
     {
-        return Order::create($requestData);
+        return $this->create($requestData);
     }
 
     /**
@@ -86,20 +67,18 @@ class OrderRepository extends Repository
      */
     public function syncStacks(int $id, array $stacks): void
     {
-        $order = $this->getById($id);
-        if ($order) {
-            $order->stacks()->sync($stacks);
-        }
+        $this->setStacks($id, $stacks);
     }
 
     /**
-     * @param int $id
+     * @param array $requestData
      * @return mixed
      */
-    public function getById(int $id)
+    public function getAll(array $requestData)
     {
-        return Order::whereId($id)->first();
+        return $this->filter($requestData);
     }
+
 
     /**
      * @param array $requestData
@@ -107,25 +86,16 @@ class OrderRepository extends Repository
      */
     public function update(array $requestData, int $id): void
     {
-        $order = $this->getById($id);
-
-        if ($order) {
-            $order->update($requestData);
-        }
-
+        $this->edit($id, $requestData);
     }
 
     /**
      * @param int $id
+     * @return array
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): array
     {
-
-        $order = $this->getById($id);
-
-        $order->people()->delete();
-
-        $order->delete();
+        return $this->delete($id);
     }
 
     /**
@@ -139,6 +109,10 @@ class OrderRepository extends Repository
 
         if ($order) {
             $order->update(['status' => $requestData['status']]);
+        }
+
+        if ($requestData['status'] === self::STATUS_ONGOING) {
+            $this->projectRepository->store($order, $creator_id);
         }
 
         $data = [
@@ -193,7 +167,8 @@ class OrderRepository extends Repository
      * @param null $date
      * @return mixed
      */
-    public function getOrdersCountGroupMonthAndStatuses($date = null) {
+    public function getOrdersCountGroupMonthAndStatuses($date = null)
+    {
 
         return Order::selectRaw('status, count(*) data,creator_id')
             ->when($date && count($date) == 2 && $date[0] !== 'null' && $date[1] !== 'null', function ($subQuery) use ($date) {

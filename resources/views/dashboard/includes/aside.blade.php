@@ -68,6 +68,13 @@
                     </a>
                 </li>
                 @endcan
+                <li class="nav-item">
+                    <a href="{{route('projects.index')}}"
+                       class="nav-link {{request()->is('dashboard/projects*') ?'active':''}}">
+                        <i class="fa  fa-id-card nav-icon"></i>
+                        <p>Projects</p>
+                    </a>
+                </li>
 
                 @can('view_agent_and_agents_list')
                 <li class="nav-item">

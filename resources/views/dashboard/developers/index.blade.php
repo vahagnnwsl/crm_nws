@@ -23,6 +23,7 @@
                         </a>
                     </div>
                 @endcan
+                    <x-filter-component :filterAttributes="$filterAttributes"/>
 
                 @if($developers->count())
                     <div class="card-body p-0" style="display: block;">
@@ -32,11 +33,13 @@
                                 <th style="width: 1%">
                                     #
                                 </th>
-
+                                <th style="width: 1%">
+                                    Avatar
+                                </th>
                                 <th style="width: 10%">
                                     Full name
                                 </th>
-                                <th style="width: 15%">
+                                <th style="width: 10%">
                                     Email
                                 </th>
                                 <th style="width: 10%">
@@ -65,7 +68,9 @@
                                     <td>
                                         #
                                     </td>
-
+                                    <td>
+                                        <img class="table-avatar" src="{{$developer->image}}">
+                                    </td>
                                     <td>
                                         {{$developer->fullName}}
                                     </td>

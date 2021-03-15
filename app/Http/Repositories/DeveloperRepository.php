@@ -4,10 +4,11 @@ namespace App\Http\Repositories;
 
 use App\Http\Services\ActivityServices;
 use App\Models\Developer;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
 
-class DeveloperRepository
+class DeveloperRepository extends Repository
 {
 
     const STATUS_INTERVIEWEES = 0;
@@ -16,21 +17,22 @@ class DeveloperRepository
 
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAll()
+    public function model()
     {
-        return Developer::orderByDesc('created_at')->paginate(20);
+        return Developer::class;
     }
 
     /**
-     * @param int $id
+     * @param array $requestData
      * @return mixed
      */
-    public function getById(int $id)
+    public function getAll(array $requestData)
     {
-        return Developer::whereId($id)->first();
+        return $this->filter($requestData);
     }
+
 
     /**
      * @param int $creator_id
@@ -42,10 +44,14 @@ class DeveloperRepository
         $reqData['creator_id'] = $creator_id;
 
         if (isset($reqData['cv'])) {
-            $reqData['cv'] = $this->uploadCv($reqData['cv']);
+            $reqData['cv'] = $this->upload($reqData['cv'], 'cv');
         }
 
-        return Developer::create($reqData);
+        if (isset($reqData['avatar'])) {
+            $reqData['avatar'] = $this->upload($reqData['avatar'], 'developer_avatars');
+        }
+
+        return $this->create($reqData);
 
     }
 
@@ -55,27 +61,17 @@ class DeveloperRepository
      */
     public function update(int $id, array $reqData): void
     {
-        $developer = $this->getById($id);
-
-        if ($developer) {
-            if (isset($reqData['cv'])) {
-                $reqData['cv'] = $this->uploadCv($reqData['cv']);
-            }
-
-            $developer->update($reqData);
+        if (isset($reqData['cv'])) {
+            $reqData['cv'] = $this->upload($reqData['cv'], 'cv');
         }
-    }
 
-    /**
-     * @param object $cv
-     * @return string
-     */
-    public function uploadCv(object $cv): string
-    {
-        $path = $cv->store('/public/cv');
-        return explode('public/', $path)[1];
-    }
+        if (isset($reqData['avatar'])) {
+            $reqData['avatar'] = $this->upload($reqData['avatar'], 'developer_avatars');
+        }
 
+
+        $this->edit($id, $reqData);
+    }
 
     /**
      * @param int $id
@@ -83,29 +79,7 @@ class DeveloperRepository
      */
     public function destroy(int $id): array
     {
-        $developer = $this->getById($id);
-
-        if ($developer) {
-
-            if ($developer->expertOrders->count()) {
-
-                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->expertOrders->pluck('id')->toArray()) . ']'];
-            }
-
-            if ($developer->developerOrders->count()) {
-
-                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->developerOrders->pluck('id')->toArray()) . ']'];
-            }
-
-            if ($developer->teamLeadOrders->count()) {
-
-                return ['msg' => 'Please before delete,delete orders where ID in array [' . implode(',', $developer->teamLeadOrders->pluck('id')->toArray()) . ']'];
-            }
-
-            $developer->delete();
-        }
-
-        return [];
+        return $this->delete($id);
     }
 
     /**
@@ -113,7 +87,7 @@ class DeveloperRepository
      */
     public function getAccepted()
     {
-        return Developer::whereStatus($this::STATUS_ACCEPTED)->get();
+        return $this->model()::whereStatus($this::STATUS_ACCEPTED)->get();
     }
 
     /**
@@ -122,10 +96,7 @@ class DeveloperRepository
      */
     public function syncStacks(int $id, array $stacks): void
     {
-        $developer = $this->getById($id);
-        if ($developer) {
-            $developer->stacks()->sync($stacks);
-        }
+        $this->setStacks($id, $stacks);
     }
 
 }

@@ -10,6 +10,8 @@ class Developer extends Model
 {
     use HasFactory, LogsActivity;
 
+    public $relationships = ['developerOrders', 'teamLeadOrders','expertOrders','developerProjects','teamLeadProjects','expertProjects'];
+
     protected static $logAttributes = ['first_name', 'last_name', 'email', 'phone', 'cv', 'position', 'status'];
 
     protected $fillable = [
@@ -20,6 +22,7 @@ class Developer extends Model
         'phone',
         'cv',
         'position',
+        'avatar',
         'status'
     ];
 
@@ -65,13 +68,36 @@ class Developer extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function developerProjects()
+    {
+        return $this->hasMany(Project::class, 'developer_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function teamLeadProjects()
+    {
+        return $this->hasMany(Project::class, 'team_lid_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function expertProjects()
+    {
+        return $this->hasMany(Project::class, 'expert_id', 'id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function stacks()
     {
         return $this->belongsToMany(Stack::class, 'developer_stacks');
     }
-
 
     /**
      * @param $value
@@ -86,5 +112,17 @@ class Developer extends Model
         return '';
     }
 
+    /**
+     * @return string
+     */
+    public function getImageAttribute(): string
+    {
+        if ($this->avatar) {
+            return "/storage/{$this->avatar}";
+        }
+
+        return '/dist/img/avatar5.png';
+
+    }
 
 }

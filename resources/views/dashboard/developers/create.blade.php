@@ -112,7 +112,16 @@
                                             </span>
                                            @enderror
                                        </div>
-
+                                       <div class="form-group row">
+                                           <label for="inputFile">Avatar</label>
+                                           <input type="file" class="form-control" id="inputFile"
+                                                  name="avatar"  style="padding-top: 3px!important;">
+                                           @error('avatar')
+                                           <span class="invalid-feedback d-block" role="alert">
+                                                                  <strong>{{ $message }}</strong>
+                                                            </span>
+                                           @enderror
+                                       </div>
                                        <div class="form-group">
                                            <label for="cv">Cv </label>
                                            <input type="file" id="cv" class="form-control"  name="cv" style="padding-top: 3px!important;">

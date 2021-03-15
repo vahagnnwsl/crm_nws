@@ -77,6 +77,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/statistic/users-singleUserOrdersGroupByStatus', 'StatisticController@getSingleUserOrdersGroupByStatus');
 
 
+    Route::get('/projects', 'ProjectController@index')->name('projects.index');
+    Route::get('/projects/{id}', 'ProjectController@edit')->name('projects.edit');
+    Route::put('/projects/{id}', 'ProjectController@update')->name('projects.update');
+    Route::put('/projects/{id}/rates', 'ProjectController@updateRate')->name('projects.updateRate');
+    Route::post('/projects/{id}/payment', 'ProjectController@storePayment')->name('projects.storePayment');
+    Route::get('/projects/{id}/payment', 'ProjectController@getPayments')->name('projects.getPayments');
+    Route::delete( '/projects/{project_id}/payment/{payment_id}', 'ProjectController@deletePayment')->name('projects.deletePayment');
+
+
+
 });
 
 

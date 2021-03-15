@@ -32,6 +32,7 @@ class DeveloperRequest extends FormRequest
             'stacks' => 'array|min:1|required||in:' . implode(',', (new StackRepository())->pluckFiled('id')),
             'phone' => 'sometimes|string|max:255|nullable',
             'cv' => 'sometimes|mimes:doc,pdf,docx|max:4072|nullable',
+            'avatar' => 'mimes:jpg,bmp,png|max:2048',
             'position' => 'required||in:' . implode(',', developerPositions()),
         ];
 

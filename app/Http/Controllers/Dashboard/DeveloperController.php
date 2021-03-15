@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\StackRepository;
 use App\Http\Requests\DeveloperRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -35,15 +36,18 @@ class DeveloperController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $developers = $this->developerRepository->getAll();
+        $developers = $this->developerRepository->getAll($request->all());
 
         $developerStatuses = developerStatuses();
 
-        return view('dashboard.developers.index', compact('developers', 'developerStatuses'));
+        $filterAttributes = ['creator', 'created', 'name', 'stacks','developer_position','developer_status'];
+
+        return view('dashboard.developers.index', compact('developers', 'developerStatuses', 'filterAttributes'));
     }
 
     /**

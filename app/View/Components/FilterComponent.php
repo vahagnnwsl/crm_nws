@@ -58,6 +58,7 @@ class FilterComponent extends Component
 
         $filterAttrs = $this->attributes();
 
+
         return view('components.filter-component', compact('filterAttrs'));
     }
 
@@ -112,6 +113,24 @@ class FilterComponent extends Component
                         'request_name' => 'status',
                         'type' => 'select',
                         'options' => arrayConvertForSelect2(orderStatuses(),true)
+                    ];
+                    break;
+                case 'developer_status':
+                    $array[$attr] = [
+                        'title' => 'Status',
+                        'name' => 'status[]',
+                        'request_name' => 'status',
+                        'type' => 'select',
+                        'options' => arrayConvertForSelect2(developerStatuses(),true)
+                    ];
+                    break;
+                case 'developer_position':
+                    $array[$attr] = [
+                        'title' => 'Position',
+                        'name' => 'positions[]',
+                        'request_name' => 'positions',
+                        'type' => 'select',
+                        'options' => arrayConvertForSelect2(developerPositions())
                     ];
                     break;
 

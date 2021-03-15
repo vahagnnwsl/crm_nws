@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 
-class Order extends Model
+class Project extends Model
 {
-    use HasFactory, LogsActivity;
-
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -20,30 +18,16 @@ class Order extends Model
         'expert_id',
         'developer_id',
         'team_lid_id',
+        'order_id',
         'agent_id',
         'status',
-        'budget',
-        'currency',
+        'rates',
         'hash'
     ];
 
-    public $relationships = ['project', 'people','statusComments'];
-
-
-    /**
-     * @var string[]
-     */
-    protected static $logAttributes = ['name', 'description', 'source', 'link', 'agent_id', 'status', 'stacks', 'budget', 'currency'];
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($model) {
-            $model->update(['hash' => md5($model->id . $model->creaded_at . time())]);
-        });
-
-    }
+    protected $casts  = [
+        'rates' => 'array'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -59,14 +43,6 @@ class Order extends Model
     public function agent()
     {
         return $this->hasOne(Agent::class, 'id', 'agent_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function people()
-    {
-        return $this->hasMany(OrderPerson::class, 'order_id');
     }
 
     /**
@@ -94,28 +70,26 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function statusComments()
-    {
-
-        return $this->hasMany(OrderStatusComment::class);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function stacks()
     {
-        return $this->belongsToMany(Stack::class, 'order_stacks');
+        return $this->belongsToMany(Stack::class, 'project_stacks');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function project()
+    public function order()
     {
-        return $this->hasOne(Project::class);
+        return $this->hasOne(Order::class, 'id', 'order_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(ProjectPayment::class, 'project_id');
+    }
 }

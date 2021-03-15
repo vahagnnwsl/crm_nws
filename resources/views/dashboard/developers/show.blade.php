@@ -27,8 +27,9 @@
                     </a>
                 </div>
 
-                <div class="card-body p-2">
-                       <div class="col-md-6 mx-auto">
+                <div class="card-body p-2 row">
+
+                       <div class="col-md-6 text-left">
                            <table>
                                <tr>
                                    <td width="20%"><strong class="text-primary">Full name: </strong></td>
@@ -69,8 +70,12 @@
                                        @endif
                                    </td>
                                </tr>
+
                            </table>
                        </div>
+                    <div class="col-md-6 text-right">
+                        <img width="200" class="img-bordered img-fluid" src="{{$developer->image}}">
+                    </div>
                 </div>
             </div>
         </div>
