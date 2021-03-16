@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\Http\Services\ActivityServices;
 use App\Models\Order;
 use App\Models\Project;
+use App\Models\ProjectRate;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
@@ -102,10 +103,16 @@ class ProjectRepository extends Repository
         }
 
         $project = $this->getById($project_id);
-        $requestData['currency'] = explode('/',$requestData['rate'])[0];
-        $requestData['budget'] = explode('/',$requestData['rate'])[1];
+        $rate = ProjectRate::where(['project_id' => $project_id, 'id' => $requestData['rate']])->first();
 
-        $project->payments()->create(Arr::except($requestData,'rate'));
+        if ($rate) {
+
+            $requestData['currency'] = $rate->currency;
+            $requestData['budget'] = $rate->budget;
+            $project->payments()->create(Arr::except($requestData, 'rate'));
+
+        }
+
     }
 
     /**
@@ -129,15 +136,20 @@ class ProjectRepository extends Repository
     /**
      * @param $id
      * @param array $requestData
+     * @param int $creator_id
      * @return array
      */
-    public function updateRate($id, array $requestData) :array
+    public function storeRate($id, array $requestData, int $creator_id)
     {
         $project = $this->getById($id);
 
-        $rates = $project->rates ?? [];
-        $rates[] = $requestData;
-        $project->update(['rates' => $rates]);
+        $project->rates()->update(['default' => 0]);
+
+        $requestData['default'] = 1;
+
+        $requestData['creator_id'] = $creator_id;
+
+        $project->rates()->create($requestData);
 
         return $project->rates;
     }

@@ -79,13 +79,15 @@ Vue.component('project-rates', {
                         <th> CURRENCY</th>
                         <th> BUDGET</th>
                         <th> DATE</th>
+                        <th> DEFAULT</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(rate,index) in rates">
                         <td>{{ rate.currency }}</td>
                         <td>{{ rate.budget }}</td>
-                        <td>{{ rate.date }}</td>
+                        <td>{{ rate.date}}</td>
+                        <td>{{ rate.default}}</td>
 
                     </tr>
                     </tbody>
@@ -105,10 +107,10 @@ Vue.component('project-rates', {
             rates: []
         }
     },
-    props: ['currencies', 'project'],
+    props: ['currencies', 'project','rates'],
     mounted() {
         this.id = this.project.id;
-        this.rates = this.project.rates ?? [];
+        console.log(this.rates)
     },
     methods: {
         submit: function () {
@@ -117,7 +119,6 @@ Vue.component('project-rates', {
                 if (valid) {
                     this.$http.put(`/dashboard/projects/${this.id}/rates`, {rates: this.form})
                         .then((response) => {
-                            this.rates = response.data.rates;
                             this.formClear();
                             setTimeout(function () {
                                 location.reload();
@@ -128,6 +129,7 @@ Vue.component('project-rates', {
                 }
             });
         },
+
         formClear: function () {
             this.form.date = '';
             this.form.budget = '';

@@ -27,7 +27,7 @@ Vue.component('project-payments', {
                                     <label for="date">Rate</label>
 
                                     <select class="form-control" name="rate" v-model="form.rate">
-                                        <option :value="rate.currency+'/'+rate.budget" v-for="rate in project.rates">{{rate.date}} / {{rate.currency}} / {{rate.budget}}</option>
+                                        <option :value="rate.id" v-for="rate in rates">{{rate.date}} / {{rate.currency}} / {{rate.budget}}</option>
                                     </select>
                                     <span class="error invalid-feedback d-block"
                                           ref="attachment-error">{{ errors.first('rate') }}</span>
@@ -92,13 +92,18 @@ Vue.component('project-payments', {
                 attachment: '',
                 rate: '',
             },
+            rates: [],
             payments: []
         }
     },
-    props: ['currencies', 'project'],
+    props: ['currencies', 'project','rates'],
     mounted() {
         this.id = this.project.id;
         this.getPayments();
+
+        this.form.rate = this.rates.filter(function (item){
+           return item.default === 1
+        })[0].id;
     },
     methods: {
         submit: function () {
@@ -137,7 +142,6 @@ Vue.component('project-payments', {
         formClear: function () {
             this.form.date = '';
             this.form.attachment = '';
-            this.form.rate = '';
         },
         handleFileUpload: function () {
             var self = this;

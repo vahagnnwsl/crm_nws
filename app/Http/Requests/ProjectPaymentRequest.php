@@ -31,7 +31,7 @@ class ProjectPaymentRequest extends FormRequest
 
 
         return [
-            'rate' => 'required|string|max:255',
+            'rate' => 'required|exists:App\Models\ProjectRate,id',
             'date' => 'required|date_format:Y-m-d',
             'attachment' => 'sometimes|base64image|nullable'
 

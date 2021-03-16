@@ -137,11 +137,11 @@ class ProjectController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateRate(Request $request, $id)
+    public function storeRate(Request $request, $id)
     {
         $this->putFlashMessage(true,'Success');
 
-        return response()->json(['rates' => $this->projectRepository->updateRate($id, $request->get('rates'))]);
+        return response()->json(['rates' => $this->projectRepository->storeRate($id, $request->get('rates'),Auth::id())]);
     }
 
 

@@ -14,7 +14,6 @@ class AddField3ToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->json('rates')->after('link')->nullable();
             $table->dropColumn(['budget', 'currency']);
 
         });

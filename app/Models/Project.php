@@ -21,13 +21,9 @@ class Project extends Model
         'order_id',
         'agent_id',
         'status',
-        'rates',
         'hash'
     ];
 
-    protected $casts  = [
-        'rates' => 'array'
-    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -92,4 +88,13 @@ class Project extends Model
     {
         return $this->hasMany(ProjectPayment::class, 'project_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rates()
+    {
+        return $this->hasMany(ProjectRate::class, 'project_id')->orderByDesc('created_at');
+    }
+
 }

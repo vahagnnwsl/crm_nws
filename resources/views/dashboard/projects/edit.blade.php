@@ -187,8 +187,8 @@
 
 
                     <div class="col-md-6">
-                        <project-payments :project="{{json_encode($project)}}" :currencies="{{json_encode($currencies)}}"></project-payments>
-                        <project-rates :project="{{json_encode($project)}}" :currencies="{{json_encode($currencies)}}"></project-rates>
+                        <project-payments :project="{{json_encode($project)}}"  :rates="{{json_encode($project->rates)}}" :currencies="{{json_encode($currencies)}}"></project-payments>
+                        <project-rates :project="{{json_encode($project)}}" :rates="{{json_encode($project->rates)}}" :currencies="{{json_encode($currencies)}}"></project-rates>
                     </div>
 
                 </div>
