@@ -199,8 +199,8 @@
 @push('js')
     <script src="/plugins/select2/js/select2.full.min.js"></script>
 
-    <script src="/components/project-payments.js"></script>
-    <script src="/components/project-rates.js"></script>
+    <script src="/components/project/payments.js"></script>
+    <script src="/components/project/rates.js"></script>
 
     <script>
 

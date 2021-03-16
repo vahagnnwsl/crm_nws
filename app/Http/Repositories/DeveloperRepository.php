@@ -99,4 +99,29 @@ class DeveloperRepository extends Repository
         $this->setStacks($id, $stacks);
     }
 
+    /**
+     * @param array $requestData
+     * @param int $developer_id
+     * @param int $creator_id
+     */
+    public function storeInterview(array $requestData, int $developer_id, int $creator_id): void
+    {
+        $developer = $this->getById($developer_id);
+
+        $requestData['creator_id'] = $creator_id;
+
+        $developer->interviews()->create($requestData);
+    }
+
+
+    /**
+     * @param int $developer_id
+     * @param int $interview_id
+     */
+    public function deleteInterview(int $developer_id, int $interview_id): void
+    {
+        $developer = $this->getById($developer_id);
+
+        $developer->interviews()->whereId($interview_id)->delete();
+    }
 }

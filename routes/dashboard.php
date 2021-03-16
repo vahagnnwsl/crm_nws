@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/developers/{id}/show', 'DeveloperController@show')->name('developers.show')->middleware('permission:view_developer_and_developers_list');
     Route::get('/developers/create', 'DeveloperController@create')->name('developers.create')->middleware('permission:developer_create_update_delete');
     Route::post('/developers', 'DeveloperController@store')->name('developers.store')->middleware('permission:developer_create_update_delete');
+    Route::post('/developers/{id}/interview', 'DeveloperController@storeInterview')->middleware('permission:developer_create_update_delete');
+    Route::delete('/developers/{developer_id}/interview/{interview_id}', 'DeveloperController@deleteInterview')->middleware('permission:developer_create_update_delete');
     Route::get('/developers/{id}/edit', 'DeveloperController@edit')->name('developers.edit')->middleware('permission:developer_create_update_delete');
     Route::put('/developers/{id}', 'DeveloperController@update')->name('developers.update')->middleware('permission:developer_create_update_delete');
     Route::delete('/developers/{id}', 'DeveloperController@destroy')->name('developers.destroy')->middleware('permission:developer_create_update_delete');

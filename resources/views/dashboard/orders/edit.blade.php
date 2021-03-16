@@ -28,199 +28,13 @@
 
 
                     <div class="col-md-6">
-                        <form action="{{route('orders.update',$order->id)}}" method="POST">
-                            @csrf
-                            <input name="_method" type="hidden" value="PUT">
-                            <div class="row">
-                                <div class="card card-primary w-100">
-                                    <div class="card-header">
-                                        <h3 class="card-title">General</h3>
-                                    </div>
-                                    <div class="card-body" style="display: block;">
-                                        <div class="form-group">
-                                            <label for="inputName">Name *</label>
-                                            <input type="text" id="inputName" class="form-control" name="name"
-                                                   value="{{$order->name}}">
-                                            @error('name')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                 <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label for="agent">Agent *</label>
-                                            <select class="form-control" id="agent" name="agent_id">
-                                                <option disabled selected>Select one</option>
-                                                @foreach($agents as $agent)
-                                                    <option
-                                                        value="{{$agent->id}}" {{$order->agent_id===$agent->id?'selected':''}}>{{$agent->fullName}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('agent_id')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="expert_id">Expert  </label>
-                                            <select class="form-control" id="expert_id" name="expert_id">
-                                                <option disabled selected>Select one</option>
-                                                @foreach($developers as $developer)
-                                                    <option value="{{$developer->id}}" {{$order->expert_id === $developer->id ?' selected': ''}}>{{$developer->fullName}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('expert_id')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="developer_id">Developer  </label>
-                                            <select class="form-control" id="developer_id" name="developer_id">
-                                                <option disabled selected>Select one</option>
-                                                @foreach($developers as $developer)
-                                                    <option value="{{$developer->id}}" {{$order->developer_id === $developer->id ?' selected': ''}}>{{$developer->fullName}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('developer_id')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label for="team_lid_id">Team lid  </label>
-                                            <select class="form-control" id="team_lid_id" name="team_lid_id">
-                                                <option disabled selected>Select one</option>
-                                                @foreach($developers as $developer)
-                                                    <option
-                                                        value="{{$developer->id}}" {{$order->team_lid_id === $developer->id?'selected':''}}>{{$developer->fullName}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('team_lid_id')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="sources">Source *</label>
-                                            <select class="form-control" id="sources" name="source">
-                                                <option disabled selected>Select one</option>
-                                                @foreach($sources as $source)
-                                                    <option
-                                                        value="{{$source}}" {{$order->source === $source?'selected':''}}>{{$source}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('source')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                               <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="link">Link *</label>
-                                            <input type="url" id="link" class="form-control" name="link"
-                                                   value="{{$order->link}}">
-                                            @error('link')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                 <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="input-group input-group-lg mb-3">
-                                                <div class="input-group-prepend">
-                                                    <button type="button"
-                                                            class="btn btn-dark dropdown-toggle currency_show_btn"
-                                                            data-toggle="dropdown" aria-expanded="false"
-                                                            style="background-color: grey;border-radius: 0;border-color: grey">
-                                                        {{$order->currency ??'Currency'}}
-                                                    </button>
-                                                    <ul class="dropdown-menu" style="">
-                                                        @foreach($currencies as $currency)
-                                                            <li class="dropdown-item">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input"
-                                                                           id="currency__{{$currency->label}}"
-                                                                           type="radio" name="currency"
-                                                                           {{$order->currency === $currency->label ?'checked':'' }} value="{{$currency->label}}">
-                                                                    <label class="form-check-label"
-                                                                           for="currency__{{$currency->label}}">
-                                                                        <i class="{{$currency->icon}}"></i>
-                                                                        {{$currency->label}}
-
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                                <!-- /btn-group -->
-                                                <input type="number" class="form-control" name="budget"
-                                                       placeholder="Budget" value="{{$order->budget}}">
-                                                @error('budget')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                                @error('currency')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-
-
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label for="stacks">Stacks *</label>
-                                            <select class="select2" style="width: 100%;" name="stacks[]" id="stacks"
-                                                    multiple="multiple">
-
-                                                @foreach($order->stacks as $stack)
-                                                    <option value="{{$stack->id}}" selected>{{$stack->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('stacks')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                 <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputDescription">Description </label>
-                                            <textarea id="inputDescription" class="form-control" rows="4"
-                                                      name="description">{{$order->description}}</textarea>
-                                            @error('description')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                   <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-success float-right"><i
-                                            class="fa fa-check-circle"></i> Submit
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <order-edit  :agents="{{json_encode($agents)}}"
+                                      :developers="{{json_encode($developers)}}"
+                                      :sources="{{json_encode($sources)}}"
+                                      :stacks="{{json_encode($stacks)}}"
+                                      :currencies="{{json_encode($currencies)}}"
+                                      :order="{{json_encode($order)}}"
+                        ></order-edit>
                     </div>
                     <div class="col-md-6">
 
@@ -270,20 +84,7 @@
                         @endcan
                         @can('order_update_status')
                             <div class="row pl-2 pr-2">
-                                <div class="card card-purple w-100 collapsed-card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Change status</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-
-                                  <order-status :statuses="{{json_encode($statuses)}}" :order="{{json_encode($order)}}"></order-status>
-
-                                </div>
+                                <order-status :statuses="{{json_encode($statuses)}}" :order="{{json_encode($order)}}"></order-status>
                             </div>
                         @endcan
 
@@ -300,10 +101,11 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
 
     @can('order_update_status')
-      <script src="/components/order-status.js"></script>
+      <script src="/components/order/status.js"></script>
     @endcan
     @can('order_person_create_update_delete')
-        <script src="/components/order-person.js"></script>
+        <script src="/components/order/person.js"></script>
+        <script src="/components/order/edit.js"></script>
 
         <script>
 
@@ -320,14 +122,13 @@
                 })
             })
 
-
             $(function () {
 
                 $('.select2').select2({
                     multiple: true,
-                    data: @json($stacks)
                 })
             });
+
         </script>
     @endcan
 @endpush

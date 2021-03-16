@@ -6,15 +6,15 @@ Vue.component('project-rates', {
                 <h3 class="card-title">Rates</h3>
             </div>
             <div class="card-body  w-100">
-                <div class="card card-info w-100">
+                <div class="card card-info w-100 collapsed-card">
                     <div class="card-header">
                         <button type="button" class="btn btn-tool float-right" data-card-widget="collapse"
                                 title="Collapse">
-                            <i class="fas fa-minus"></i>
+                            <i class="fa fa-plus"></i>
                         </button>
                     </div>
 
-                    <div class="card-body" style="display: block">
+                    <div class="card-body" style="display: none">
                         <form @submit.prevent="submit">
                             <fieldset>
                                 <div class="form-group input-group-sm">

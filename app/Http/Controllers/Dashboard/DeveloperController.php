@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\StackRepository;
+use App\Http\Requests\DeveloperInterviewRequest;
 use App\Http\Requests\DeveloperRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class DeveloperController extends Controller
 
         $developerStatuses = developerStatuses();
 
-        $filterAttributes = ['creator', 'created', 'name', 'stacks','developer_position','developer_status'];
+        $filterAttributes = ['creator', 'created', 'name', 'stacks', 'developer_position', 'developer_status'];
 
         return view('dashboard.developers.index', compact('developers', 'developerStatuses', 'filterAttributes'));
     }
@@ -89,6 +90,8 @@ class DeveloperController extends Controller
         if (!$developer) {
             abort(404);
         }
+
+        $developer->load('interviews');
 
         $developerPositions = developerPositions();
 
@@ -147,4 +150,30 @@ class DeveloperController extends Controller
         return redirect()->route('developers.index');
     }
 
+
+    /**
+     * @param DeveloperInterviewRequest $request
+     * @param int $developer_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeInterview(DeveloperInterviewRequest $request, int $developer_id)
+    {
+        $this->developerRepository->storeInterview($request->validated(), $developer_id, Auth::id());
+        $this->putFlashMessage(true, 'Successfully created');
+        return response()->json();
+    }
+
+    /**
+     * @param int $developer_id
+     * @param int $interview_id
+     * @return \Illuminate\Http\JsonResponse\
+     */
+    public function deleteInterview(int $developer_id, int $interview_id)
+    {
+        $this->developerRepository->deleteInterview($developer_id,$interview_id);
+
+        $this->putFlashMessage(true, 'Successfully deleted');
+
+        return response()->json();
+    }
 }

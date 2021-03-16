@@ -10,7 +10,7 @@ class Developer extends Model
 {
     use HasFactory, LogsActivity;
 
-    public $relationships = ['developerOrders', 'teamLeadOrders','expertOrders','developerProjects','teamLeadProjects','expertProjects'];
+    public $relationships = ['developerOrders', 'teamLeadOrders', 'expertOrders', 'developerProjects', 'teamLeadProjects', 'expertProjects'];
 
     protected static $logAttributes = ['first_name', 'last_name', 'email', 'phone', 'cv', 'position', 'status'];
 
@@ -123,6 +123,14 @@ class Developer extends Model
 
         return '/dist/img/avatar5.png';
 
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function interviews()
+    {
+        return $this->hasMany(DeveloperInterview::class, 'developer_id');
     }
 
 }

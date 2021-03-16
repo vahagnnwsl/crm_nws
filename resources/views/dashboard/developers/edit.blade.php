@@ -33,7 +33,7 @@
 
 
                         <div class="row">
-                            <div class="col-md-6 mx-auto mt-2">
+                            <div class="col-md-6 o mt-2">
 
                                 <div class="card  card-primary">
                                     <div class="card-header">
@@ -169,7 +169,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <developer-interview :developer="{{json_encode($developer)}}" :positions="{{json_encode($developerPositions)}}"></developer-interview>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -179,7 +181,7 @@
 @endsection
 @push('js')
     <script src="/plugins/select2/js/select2.full.min.js"></script>
-
+      <script src="/components/developer/interview.js"></script>
     <script>
 
         $(function () {

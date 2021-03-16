@@ -89,7 +89,7 @@ class OrderController extends Controller
 
     /**
      * @param OrderRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(OrderRequest $request)
     {
@@ -104,7 +104,7 @@ class OrderController extends Controller
 
         $this->putFlashMessage(true, 'Successfully created');
 
-        return redirect()->route('orders.edit', $order->id);
+        return response()->json(['url'=>route('orders.edit', $order->id)]);
     }
 
     /**
@@ -115,6 +115,8 @@ class OrderController extends Controller
     {
 
         $order = $this->orderRepository->getById($id);
+
+        $order->load('stacks');
 
         if (!$order) {
             abort(404);
@@ -158,7 +160,7 @@ class OrderController extends Controller
     /**
      * @param OrderRequest $request
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(OrderRequest $request, $id)
     {
@@ -169,7 +171,7 @@ class OrderController extends Controller
 
         $this->putFlashMessage(true, 'Successfully updated');
 
-        return redirect()->route('orders.edit', $id);
+        return response()->json([]);
     }
 
     /**
