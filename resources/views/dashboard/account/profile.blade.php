@@ -123,7 +123,7 @@
 
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
+                                <button type="submit" class="btn btn-success float-right"> <i class="fa fa-check-circle mr-1"></i>Submit </button>
                             </div>
                         </div>
 

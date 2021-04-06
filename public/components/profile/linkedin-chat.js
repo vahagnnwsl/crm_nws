@@ -78,7 +78,7 @@ Vue.component('profile-linkedin-chat', {
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
                                      style="left: inherit; right: 0px;">
                                     <div class="dropdown-divider"></div>
-                                    <a href="javascript:void(0)" @click="syncMessages" class="dropdown-item">
+                                    <a href="javascript:void(0)" @click="syncMessages(selectedConversation.id)" class="dropdown-item">
                                         <i class="fas fa-sync-alt mr-2"></i> Sync with Linkedin
                                     </a>
                                 </div>
@@ -356,7 +356,7 @@ Vue.component('profile-linkedin-chat', {
             if (!id){
                 id = this.selectedConversation.id;
             }
-            console.log(4544)
+            console.log(this.selectedConversation)
 
             this.$http.post(`/dashboard/linkedin/conversations/${id}/sync`)
                 .then(() => {
