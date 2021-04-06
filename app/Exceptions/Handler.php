@@ -36,7 +36,7 @@ class Handler extends ExceptionHandler
     {
 
         $this->reportable(function (Throwable $e) {
-            TLE::exp($e)->info('Error')->send();
+           // TLE::exp($e)->info('Error')->send();
         });
     }
 
