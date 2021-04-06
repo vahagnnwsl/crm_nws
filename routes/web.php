@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
+
+
+
 Auth::routes(['register' => false]);
 Route::get('/linkedit',function (){
    dd(request()->get('code'));

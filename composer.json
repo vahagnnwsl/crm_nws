@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "7.3.0",
+        "jackmartin/telegram-logger-errors": "^1.6",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
@@ -20,8 +21,7 @@
         "pusher/pusher-php-server": "^6.1",
         "sentry/sentry-laravel": "^2.3",
         "spatie/laravel-activitylog": "^3.16",
-        "spatie/laravel-permission": "^4.0",
-        "ext-http": "*"
+        "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
