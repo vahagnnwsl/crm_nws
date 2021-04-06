@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         $admin->assignRole('Admin');
 
         User::factory()
-            ->count(7)
+            ->count(1)
             ->create();
 
 
