@@ -53,12 +53,15 @@ class LinkedinPuppeteerLogin extends Command
      */
     public function handle()
     {
-        $users =  (new UserRepository())->getLinkedinCredentialsFilledUsers();
+        $users = (new UserRepository())->getLinkedinCredentialsFilledUsers();
 
         foreach ($users as $user) {
             try {
 
-                $browser = (new Puppeteer)->launch();
+                $browser = (new Puppeteer)->launch([
+                    'headless' => true,
+                    'args' => ['--no-sandbox']
+                ]);
 
                 $page = $browser->newPage();
 
@@ -82,13 +85,13 @@ class LinkedinPuppeteerLogin extends Command
 
                 $filtered = [];
 
-                foreach ($cookies as $item){
-                    $filtered[$item['name']]=str_replace('"', '', $item['value']);
+                foreach ($cookies as $item) {
+                    $filtered[$item['name']] = str_replace('"', '', $item['value']);
                 }
 
                 $cookie = [
-                    'str' =>  Helper::cookieToString(collect($filtered)),
-                    'crfToken'=> $filtered['JSESSIONID']
+                    'str' => Helper::cookieToString(collect($filtered)),
+                    'crfToken' => $filtered['JSESSIONID']
                 ];
 
                 File::put(storage_path('linkedin/cookies/' . $user->linkedin_login . '.json'), json_encode($cookie));
@@ -96,8 +99,8 @@ class LinkedinPuppeteerLogin extends Command
                 //$page->screenshot(['path' => public_path($user->linkedin_login . '.png')]);
 
                 $browser->close();
-            }catch (\Exception $exception){
-                 $this->error($exception->getMessage().'   '.$user->linkedin_login);
+            } catch (\Exception $exception) {
+                $this->error($exception->getMessage() . '   ' . $user->linkedin_login);
             }
         }
 
