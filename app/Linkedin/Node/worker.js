@@ -1,6 +1,7 @@
 const fs = require('fs'),
     path = require('path'),
-    {fork} = require("child_process");
+    {fork} = require("child_process"),
+    axios = require('axios');
 
 
 let strUsers = fs.readFileSync('./storage/linkedin/linkedin_users.json'),
@@ -10,14 +11,20 @@ let strUsers = fs.readFileSync('./storage/linkedin/linkedin_users.json'),
 (async () => {
 
 
-
     users.map(function (user) {
+
         const childProcess = fork(path.join(path.dirname(__filename), 'eventsource.js'));
 
         childProcess.send(user);
 
         childProcess.on("message", function (message) {
-            console.log(message)
+
+            axios.post(message.url, message.payloadReq).then((response) => {
+                console.log(response.data)
+            }).catch((e) => {
+                console.log(e)
+            })
+
         })
 
         childProcess.on('error', function (e) {

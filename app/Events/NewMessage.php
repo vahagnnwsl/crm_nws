@@ -51,6 +51,7 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+
         return $this->message;
     }
 

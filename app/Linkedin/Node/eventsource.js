@@ -1,11 +1,10 @@
 const EventSource = require('eventsource'),
-    fs = require('fs'),
-    axios = require('axios');
-
+    fs = require('fs');
 
 process.on("message", message => {
 
     let strCookie = fs.readFileSync('./storage/linkedin/cookies/' + message.login + '.json');
+
     let cookies = JSON.parse(strCookie);
 
     let eventSourceInitDict = {
@@ -38,11 +37,13 @@ process.on("message", message => {
     var es = new EventSource('https://realtime.www.linkedin.com/realtime/connect', eventSourceInitDict);
 
     let key = 'com.linkedin.realtimefrontend.DecoratedEvent';
+
     es.onmessage = result => {
 
         const data = JSON.parse(result.data);
 
         if (data.hasOwnProperty(key)) {
+
             var eventContent = data[key];
 
             if (eventContent.hasOwnProperty('topic')) {
@@ -52,6 +53,7 @@ process.on("message", message => {
                     let payload = eventContent.payload;
 
                     if (payload.included.length) {
+
                         let payloadReq = {
                             text: payload.included[1].eventContent.attributedBody.text,
                             conversation_entityUrn: getConversationDetails(payload.included[1]['*from'])[0],
@@ -69,21 +71,18 @@ process.on("message", message => {
                             payloadReq.attachments = payload.included[1].eventContent.attachments;
                         }
 
-                        console.log(payload.included[1])
-
                         if (payloadReq.user_entityUrn !== message.entityUrn) {
-                            axios.post(`http://nws-crm.loc/api/conversations/${payloadReq.conversation_entityUrn}/messages`, payloadReq).then((response) => {
-                                console.log(response.data)
-                            }).catch((e) => {
-                                console.log(e)
-                            })
+
+                            process.send({
+                                url: `http://nws-crm.loc/api/conversations/${payloadReq.conversation_entityUrn}/messages`,
+                                payloadReq: payloadReq
+                            });
                         }
                     }
                 }
             }
         }
     };
-
 
     es.onerror = err => {
         console.log('EventSource error: ', err);

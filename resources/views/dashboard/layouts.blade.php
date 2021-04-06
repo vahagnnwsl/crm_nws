@@ -94,12 +94,12 @@
         Pusher.logToConsole = true;
 
 
-        @if(\Illuminate\Support\Facades\Auth::user()->linkedin_urn_id)
-        const pusher = new Pusher('5b8198fe17ba8aec464b', {
+        @if(\Illuminate\Support\Facades\Auth::user()->linkedin_entityUrn)
+        const pusher = new Pusher('dc5bc76d804373cb8a98', {
             cluster: 'ap2'
         });
 
-        const channel = pusher.subscribe('channel.{{\Illuminate\Support\Facades\Auth::user()->linkedin_urn_id}}');
+        const channel = pusher.subscribe('channel.{{\Illuminate\Support\Facades\Auth::user()->linkedin_entityUrn}}');
 
         @endif
 

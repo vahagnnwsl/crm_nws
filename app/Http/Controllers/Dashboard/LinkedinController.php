@@ -139,7 +139,7 @@ class LinkedinController extends Controller
         $user = $this->userRepository->getById($user_id);
 
         if ($user) {
-            return response()->json(['messages' => new LinkedinMessageCollection($this->messageRepository->getConversationMessagesForUser($conversation_id, $user->linkedin_urn_id)->keyBy->hash)]);
+            return response()->json(['messages' => new LinkedinMessageCollection($this->messageRepository->getConversationMessagesForUser($conversation_id, $user->linkedin_entityUrn)->keyBy->hash)]);
         }
 
         return response()->json(['error' => 'User not founded'], 411);

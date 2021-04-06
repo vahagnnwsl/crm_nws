@@ -62,15 +62,21 @@ class ConversationController extends Controller
             $data['conversation_id'] = $conversation->id;
             $data['status'] = $this->messageRepository::SENDED_STATUS;
             $data['event'] = $this->messageRepository::RECEIVE_EVENT;
+
             $message = $this->messageRepository->updateOrCreate($data);
 
-            File::put(storage_path('a.json'),json_encode($data));
+
 
             foreach ($conversation->users as $user) {
-                event(new NewMessage((new LinkedinMessage($message))->toArray([]), $user->linkedin_entityUrn));
-            }
+                try {
+                    event(new NewMessage((new LinkedinMessage($message))->toArray([]), $user->linkedin_entityUrn));
+                }catch (\Exception $exception){
+                    return response()->json(['success' => $exception->getMessage()]);
 
+                }
+            }
             return response()->json(['success' => true]);
+
 
         }else{
 
