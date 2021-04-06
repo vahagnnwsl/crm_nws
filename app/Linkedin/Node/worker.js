@@ -10,6 +10,7 @@ let strUsers = fs.readFileSync('./storage/linkedin/linkedin_users.json'),
 
 (async () => {
 
+    require('dotenv').config()
 
     users.map(function (user) {
 
@@ -19,7 +20,7 @@ let strUsers = fs.readFileSync('./storage/linkedin/linkedin_users.json'),
 
         childProcess.on("message", function (message) {
 
-            axios.post(message.url, message.payloadReq).then((response) => {
+            axios.post(process.env.APP_URL+message.url, message.payloadReq).then((response) => {
                 console.log(response.data)
             }).catch((e) => {
                 console.log(e)

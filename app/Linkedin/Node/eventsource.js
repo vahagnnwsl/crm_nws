@@ -74,7 +74,7 @@ process.on("message", message => {
                         if (payloadReq.user_entityUrn !== message.entityUrn) {
 
                             process.send({
-                                url: `http://nws-crm.loc/api/conversations/${payloadReq.conversation_entityUrn}/messages`,
+                                url: `/api/conversations/${payloadReq.conversation_entityUrn}/messages`,
                                 payloadReq: payloadReq
                             });
                         }
