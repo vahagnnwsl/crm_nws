@@ -89,6 +89,12 @@
                                     @endif
                                 </td>
                                 <td class="project-actions text-right">
+
+{{--                                    <a class="btn btn-default btn-sm" href="{{route('users.linkedin',$user->id)}}">--}}
+{{--                                        <i class="fab fa-linkedin">--}}
+{{--                                        </i>--}}
+{{--                                    </a>--}}
+
                                     @can('view_user_and_users_list')
                                         @if($user->is_accepted_invitation)
                                             <a class="btn btn-primary btn-sm" href="{{route('users.show',$user->id)}}">

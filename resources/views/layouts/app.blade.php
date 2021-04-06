@@ -19,11 +19,13 @@
     <link rel="stylesheet" href="/plugins/toastr/toastr.css">
     <!-- Font Awesome -->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 
     @stack('css')
 
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
+
 
     <style>
         /* Absolute Center Spinner */
@@ -150,109 +152,40 @@
                 transform: rotate(360deg);
             }
         }
+
+        .active_1{
+            background-color: lightgrey;
+        }
+        .active_1:hover{
+            background-color: lightgrey!important;
+
+        }
     </style>
 </head>
 <body
     class="{{request()->is('login*')|| request()->is('user-invitation*')  ?'hold-transition login-page':'sidebar-mini'}}">
 @yield('content')
 
-<!-- /.login-box -->
-<!-- jQuery -->
 <script src="/plugins/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap 4 -->
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="/dist/js/adminlte.min.js"></script>
 <script src="/plugins/vue/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vee-validate@<3.0.0/dist/vee-validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script src="/plugins/toastr/toastr.min.js"></script>
+<script src="https://unpkg.com/vue-select@latest"></script>
 
 @stack('js')
 
 <script>
 
     @foreach (['success', 'warning', 'error', 'info'] as $key)
-    @if ($value = session($key))
+        @if ($value = session($key))
+             toastr.{{$key}}('{{session()->get($key)}}');
+        @endif
+   @endforeach
 
-    toastr.{{$key}}('{{session()->get($key)}}');
-
-
-    @endif
-        @endforeach
-
-
-        window.VeeValidate = VeeValidate;
-
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-
-    // Add a request interceptor
-    axios.interceptors.request.use(function (config) {
-        $(document).trigger('loader.update', true);
-        return config;
-    }, function (error) {
-        $(document).trigger('loader.update', false);
-        return Promise.reject(error);
-    });
-
-    // Add a response interceptor
-    axios.interceptors.response.use(function (response) {
-
-        $(document).trigger('loader.update', false);
-
-        return response;
-    }, function (error) {
-        $(document).trigger('loader.update', false);
-
-        return Promise.reject(error);
-    });
-
-
-    Vue.prototype.$http = axios
-
-    Vue.use(VeeValidate, {
-        events: 'input|change|blur',
-    });
-
-
-    Vue.prototype.$setErrorsFromResponse = function (errorResponse) {
-        // only allow this function to be run if the validator exists
-        if (!this.hasOwnProperty('$validator')) {
-            return;
-        }
-
-        // clear errors
-        this.$validator.errors.clear();
-
-        // check if errors exist
-        if (!errorResponse.hasOwnProperty('errors')) {
-            return;
-        }
-
-        let errorFields = Object.keys(errorResponse.errors);
-
-        // insert laravel errors
-
-        errorFields.map(field => {
-            this.$validator.errors.add({
-                field: field,
-                msg: errorResponse.errors[field][0]
-            });
-        });
-
-    };
-
-    const bus = new Vue();
-
-    var app = new Vue({
-        el: "#app",
-        methods: {}
-    });
-    // $(document).on('hidden.bs.modal', '.modal', function () {
-    //     $('.modal').find('.invalid-feedback').text(null);
-    // })
 </script>
 
 </body>

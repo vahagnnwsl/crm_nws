@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "linkedin-worker": "node ./app/Linkedin/Node/worker.js",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
@@ -10,17 +11,36 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
         "jquery": "^3.2",
+        "laravel-echo": "^1.10.0",
         "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "postcss": "^8.1.14",
+        "pusher-js": "^7.0.3",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        "vue": "^2.5.17"
+    },
+    "dependencies": {
+        "@nesk/puphpeteer": "^2.0.0",
+        "atob": "^2.1.2",
+        "btoa": "^1.2.1",
+        "cookie": "^0.4.1",
+        "dotenv": "^8.2.0",
+        "event-source-polyfill": "^1.0.22",
+        "eventsource": "^1.1.0",
+        "mysql": "^2.18.1",
+        "prettier": "^2.2.1",
+        "puppeteer": "^8.0.0",
+        "puppeteer-select": "^1.0.3",
+        "puppeteer-service": "^0.4.8",
+        "querystringify": "^2.2.0",
+        "socket.io": "^4.0.0",
+        "winston": "^3.3.3",
+        "ws": "^7.4.4"
     }
 }

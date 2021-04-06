@@ -8,6 +8,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'IndexController@home')->name('admin.index');
     Route::get('/profile', 'IndexController@profile')->name('account.profile');
     Route::put('/profile', 'IndexController@updateProfile')->name('account.profile.update');
+    Route::get('/profile/linkedin/chat', 'IndexController@linkedinChat')->name('account.profile.linkedinChat');
+    Route::get('/profile/linkedin/search', 'IndexController@linkedinSearch')->name('account.profile.linkedinSearch');
 
     Route::get('/roles/{id}', 'RoleController@get');
 
@@ -26,6 +28,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::get('/users/{id}/show', 'UserController@show')->name('users.show')->middleware('permission:view_user_and_users_list');
+    Route::get('/users/{id}/linkedin', 'UserController@linkedin')->name('users.linkedin');
+
     Route::get('/users', 'UserController@index')->name('users.index')->middleware('permission:view_user_and_users_list');
 
 
@@ -88,6 +92,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete( '/projects/{project_id}/payment/{payment_id}', 'ProjectController@deletePayment')->name('projects.deletePayment');
 
 
+    Route::post('/linkedin/message', 'LinkedinController@storeMessage');
+    Route::get('/linkedin/conversations/{conversation_id}/user/{user_id}/messages', 'LinkedinController@getConversationMessages');
+    Route::post('/linkedin/conversations/{id}/sync', 'LinkedinController@syncConversationMessages');
+    Route::post('/linkedin/conversations/sync', 'LinkedinController@syncConversations');
+    Route::post('/linkedin/conversations/{conversation_id}/messages/{message_id}/resend', 'LinkedinController@resendMessage');
+    Route::get('/linkedin/profiles/search', 'LinkedinController@searchProfile');
+    Route::post('/linkedin/profiles/invitations', 'LinkedinController@sendInvitation');
+    Route::get('/linkedin/profiles/invitations/sent', 'LinkedinController@getSentInvitations');
+    Route::get('/linkedin/profiles/invitations/received', 'LinkedinController@getReceivedInvitations');
+    Route::post('/linkedin/profiles/invitations/{id}/reply', 'LinkedinController@replyInvitation');
 
 });
 

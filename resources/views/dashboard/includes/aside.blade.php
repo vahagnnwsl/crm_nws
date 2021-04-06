@@ -120,7 +120,28 @@
 
                     </ul>
                 </li>
+                <li class="nav-item  {{request()->is('dashboard/profile/linkedin*') ?'menu-is-opening menu-open':''}}">
+                    <a href="#" class="nav-link  {{request()->is('dashboard/profile/linkedin*') ?'active':''}}">
+                        <i class="nav-icon fab fa-linkedin mr-2"></i>
+                        <p>
+                            Linkedin
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="{{route('account.profile.linkedinChat')}}" class="nav-link {{request()->is('dashboard/profile/linkedin/chat') ?'active':''}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Chat</p>
+                            </a>
+                            <a href="{{route('account.profile.linkedinSearch')}}" class="nav-link {{request()->is('dashboard/profile/linkedin/search*') ?'active':''}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Search</p>
+                            </a>
+                        </li>
 
+                    </ul>
+                </li>
 
             </ul>
         </nav>

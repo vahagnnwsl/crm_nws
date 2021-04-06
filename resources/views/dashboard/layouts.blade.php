@@ -24,6 +24,88 @@
 @endsection
 
 @push('js')
-
     <script src="/components/loader.js"></script>
+
+    <script>
+        window.VeeValidate = VeeValidate;
+
+        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+
+        // Add a request interceptor
+        axios.interceptors.request.use(function (config) {
+            $(document).trigger('loader.update', true);
+            return config;
+        }, function (error) {
+            $(document).trigger('loader.update', false);
+            return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+
+            $(document).trigger('loader.update', false);
+
+            return response;
+        }, function (error) {
+            $(document).trigger('loader.update', false);
+
+            return Promise.reject(error);
+        });
+
+
+        Vue.prototype.$http = axios
+
+        Vue.use(VeeValidate, {
+            events: 'input|change|blur',
+        });
+
+
+        Vue.prototype.$setErrorsFromResponse = function (errorResponse) {
+            // only allow this function to be run if the validator exists
+            if (!this.hasOwnProperty('$validator')) {
+                return;
+            }
+
+            // clear errors
+            this.$validator.errors.clear();
+
+            // check if errors exist
+            if (!errorResponse.hasOwnProperty('errors')) {
+                return;
+            }
+
+            let errorFields = Object.keys(errorResponse.errors);
+
+            // insert laravel errors
+
+            errorFields.map(field => {
+                this.$validator.errors.add({
+                    field: field,
+                    msg: errorResponse.errors[field][0]
+                });
+            });
+
+        };
+        Vue.component('v-select', VueSelect.VueSelect);
+
+        const bus = new Vue();
+
+        Pusher.logToConsole = true;
+
+
+        @if(\Illuminate\Support\Facades\Auth::user()->linkedin_urn_id)
+        const pusher = new Pusher('5b8198fe17ba8aec464b', {
+            cluster: 'ap2'
+        });
+
+        const channel = pusher.subscribe('channel.{{\Illuminate\Support\Facades\Auth::user()->linkedin_urn_id}}');
+
+        @endif
+
+        var app = new Vue({
+            el: "#app",
+            methods: {}
+        });
+    </script>
 @endpush

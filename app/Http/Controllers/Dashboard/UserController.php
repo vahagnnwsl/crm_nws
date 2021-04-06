@@ -14,8 +14,15 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    protected $userRepository;
-    protected $roleRepository;
+    /**
+     * @var UserRepository
+     */
+    protected UserRepository $userRepository;
+
+    /**
+     * @var RoleRepository
+     */
+    protected RoleRepository $roleRepository;
 
     /**
      * UserController constructor.
@@ -50,7 +57,7 @@ class UserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
 
-    public function store(UserInvitationRequest $request)
+    public function store(UserInvitationRequest $request): \Illuminate\Http\JsonResponse
     {
 
         $response = $this->userRepository->sendInvitationMail($request->validated());
@@ -110,7 +117,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->userRepository->update($request->validated(), $id);
         $this->userRepository->syncRole($id, $request->get('role'));
@@ -124,7 +131,7 @@ class UserController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $resp = $this->userRepository->destroy($id);
         $this->putFlashMessage($resp ? false : true, $resp ? $resp['msg'] : 'successfully deleted');
@@ -136,7 +143,7 @@ class UserController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function resendInvitation($id)
+    public function resendInvitation($id): \Illuminate\Http\RedirectResponse
     {
 
         $this->userRepository->resentInvitation($id);
@@ -149,11 +156,31 @@ class UserController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login($id)
+    public function login($id): \Illuminate\Http\RedirectResponse
     {
         Auth::loginUsingId($id, true);
         $this->putFlashMessage(true, 'successfully');
 
         return redirect('/dashboard');
     }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function linkedin(int $id)
+    {
+
+
+
+        $user = $this->userRepository->getById($id);
+        if (!$user) {
+            abort(404);
+        }
+
+        $conversations = $user->linkedinConversations()->orderByDesc('lastActivityAt')->get();
+
+        return view('dashboard.users.linkedin', compact('user','conversations'));
+    }
+
 }

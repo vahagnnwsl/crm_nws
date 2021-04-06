@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Linkedin\LinkedinApi;
+use App\Linkedin\Repositories\Profile;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('base64image', function ($attribute, $value, $parameters, $validator) {
             $explode = explode(',', $value);
-            $allow = ['png', 'jpg', 'svg','jpeg'];
+            $allow = ['png', 'jpg', 'svg', 'jpeg'];
             $format = str_replace(
                 [
                     'data:image/',
@@ -59,5 +61,9 @@ class AppServiceProvider extends ServiceProvider
 
             return true;
         });
+
+
+
+
     }
 }

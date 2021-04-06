@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\UserRepository;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\Collections\LinkedinConversationCollection;
+use App\Models\LinkedinMessage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
@@ -28,10 +31,7 @@ class IndexController extends Controller
      */
     public function home()
     {
-
-
         return view('dashboard.index');
-
     }
 
     /**
@@ -40,23 +40,20 @@ class IndexController extends Controller
     public function profile()
     {
         return view('dashboard.account.profile');
-
     }
 
     /**
      * @param ProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateProfile(ProfileRequest $request)
+    public function updateProfile(ProfileRequest $request): \Illuminate\Http\RedirectResponse
     {
-
-
         $data = $request->validated();
 
         if ($request->hasFile('avatar')) {
 
-            $path =$request->file('avatar')->store('/public/avatars/' . Auth::id());
-            $data['avatar'] = explode('public/',$path)[1];
+            $path = $request->file('avatar')->store('/public/avatars/' . Auth::id());
+            $data['avatar'] = explode('public/', $path)[1];
         }
 
         $this->userRepository->update($data, Auth::id());
@@ -64,7 +61,31 @@ class IndexController extends Controller
         $this->putFlashMessage(true);
 
         return redirect()->back();
+    }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
+     */
+    public function linkedinChat(Request $request)
+    {
+        $user = Auth::user();
 
+        $conversations = new LinkedinConversationCollection($user->linkedinConversations()->orderByDesc('lastActivityAt')->get());
+
+        if ($request->ajax()) {
+            return response()->json(['threads' => $conversations]);
+        }
+
+        return view('dashboard.account.linkedin-chat', compact('user', 'conversations'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function linkedinSearch()
+    {
+        $user = Auth::user();
+        return view('dashboard.account.linkedin-search', compact('user'));
     }
 }

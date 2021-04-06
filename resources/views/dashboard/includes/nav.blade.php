@@ -112,6 +112,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
 
+          
 
                     <a href="/logout" class="dropdown-item"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -126,10 +127,7 @@
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                     <i class="fas fa-th-large"></i>
                 </a>
-
             @endauth
-
-
 
         </li>
     </ul>

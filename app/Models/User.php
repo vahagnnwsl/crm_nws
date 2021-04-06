@@ -33,7 +33,11 @@ class User extends Authenticatable
         'password',
         'avatar',
         'invitation_token',
-        'color'
+        'color',
+        'linkedin_login',
+        'linkedin_password',
+        'linkedin_name',
+        'linkedin_entityUrn',
     ];
 
     /**
@@ -94,7 +98,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function timeline()
+    public function timeline(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(Activity::class, 'causer');
     }
@@ -108,7 +112,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orders()
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Order::class, 'creator_id');
     }
@@ -116,7 +120,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function agents()
+    public function agents(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Agent::class, 'creator_id');
     }
@@ -124,7 +128,7 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function developers()
+    public function developers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Developer::class, 'creator_id');
     }
@@ -132,9 +136,17 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orderPersons()
+    public function orderPersons(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(OrderPerson::class, 'creator_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function linkedinConversations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(LinkedinConversation::class,'linkedin_conversation_users','user_id','conversation_id');
     }
 
 }

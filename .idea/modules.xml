@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../node/linkedin-private-api-master/linkedin-private-api-master/.idea/linkedin-private-api-master.iml" filepath="$PROJECT_DIR$/../../../node/linkedin-private-api-master/linkedin-private-api-master/.idea/linkedin-private-api-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/nws-lab-crm.iml" filepath="$PROJECT_DIR$/.idea/nws-lab-crm.iml" />
     </modules>
   </component>

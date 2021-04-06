@@ -9,6 +9,7 @@ use App\Http\Requests\DeveloperInterviewRequest;
 use App\Http\Requests\DeveloperRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 
 class DeveloperController extends Controller
@@ -42,6 +43,8 @@ class DeveloperController extends Controller
      */
     public function index(Request $request)
     {
+
+
         $developers = $this->developerRepository->getAll($request->all());
 
         $developerStatuses = developerStatuses();

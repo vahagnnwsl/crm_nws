@@ -92,6 +92,33 @@
                             @enderror
 
                         </div>
+
+                        <div class="form-group row">
+                            <label for="linkedin_login" class="col-sm-2 col-form-label">Linkedin login</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="linkedin_login"
+                                       placeholder="Linkedin login" value="{{\Illuminate\Support\Facades\Auth::user()->linkedin_login}}" name="linkedin_login">
+                                @error('linkedin_login')
+                                <span class="invalid-feedback d-block" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                 </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="linkedin_password" class="col-sm-2 col-form-label">Linkedin password</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="linkedin_password"
+                                       placeholder="Linkedin password" value="{{\Illuminate\Support\Facades\Auth::user()->linkedin_password}}" name="linkedin_password">
+                                @error('linkedin_password')
+                                <span class="invalid-feedback d-block" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                 </span>
+                                @enderror
+                            </div>
+                        </div>
+
                             <!-- /.input group -->
 
                         <div class="form-group row">

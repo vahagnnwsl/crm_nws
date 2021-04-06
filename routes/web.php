@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 
 
 Auth::routes(['register' => false]);
+Route::get('/linkedit',function (){
+   dd(request()->get('code'));
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

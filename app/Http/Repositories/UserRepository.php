@@ -4,12 +4,19 @@ namespace App\Http\Repositories;
 
 use App\Models\User;
 use App\Notifications\UserInvitationNotification;
-use Illuminate\Support\Facades\Storage;
 
 
-class UserRepository
+class UserRepository extends Repository
 {
 
+
+    /**
+     * @return string
+     */
+    public function model(): string
+    {
+        return User::class;
+    }
 
     const INACTIVE_STATUS = 0;
     const ACTIVE_STATUS = 1;
@@ -60,7 +67,7 @@ class UserRepository
      */
     public function getActiveUserByEmail(string $email)
     {
-        return User::whereEmail($email)->whereStatus(1)->whereNull('invitation_token')->first();
+        return $this->model()::whereEmail($email)->whereStatus(1)->whereNull('invitation_token')->first();
     }
 
     /**
@@ -69,12 +76,12 @@ class UserRepository
      */
     public function getInvitationUserByEmail(string $email)
     {
-        return User::whereEmail($email)->whereStatus(0)->whereNotNull('invitation_token')->first();
+        return $this->model()::whereEmail($email)->whereStatus(0)->whereNotNull('invitation_token')->first();
     }
 
     public function getInvitationUserByEmailAndToke(string $token, string $email)
     {
-        return User::whereEmail($email)->whereStatus(0)->whereInvitationToken($token)->first();
+        return $this->model()::whereEmail($email)->whereStatus(0)->whereInvitationToken($token)->first();
     }
 
 
@@ -92,14 +99,6 @@ class UserRepository
         }
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id)
-    {
-        return User::whereId($id)->first();
-    }
 
     /**
      * @param $requestData
@@ -124,7 +123,7 @@ class UserRepository
      */
     public function getAll()
     {
-        return User::with('roles')->paginate(20);
+        return $this->model()::with('roles')->paginate(20);
     }
 
     /**
@@ -243,7 +242,7 @@ class UserRepository
      */
     public function all()
     {
-        return User::all();
+        return $this->model()::all();
     }
 
     /**
@@ -252,14 +251,20 @@ class UserRepository
      */
     public function getAllWithOrdersCount($date = null)
     {
-
-
-        return User::withCount([
+        return $this->model()::withCount([
             'orders' => function ($q) use ($date) {
                 $q->when($date && count($date) == 2 && $date[0] !== 'null' && $date[1] !== 'null', function ($subQuery) use ($date) {
                     $subQuery->whereBetween('created_at', $date);
                 });
             }
         ])->get();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinkedinCredentialsFilledUsers()
+    {
+        return $this->model()::whereNotNull('linkedin_login')->whereNotNull('linkedin_password')->get();
     }
 }

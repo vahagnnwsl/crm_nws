@@ -1,5 +1,7 @@
 @extends('dashboard.layouts')
+@push('css')
 
+@endpush
 @section('sub_content')
     <section class="content-header">
         <div class="container-fluid">
@@ -23,6 +25,7 @@
                         </a>
                     </div>
                 @endcan
+                    <developer-linkedin-search :user="{{json_encode(\Illuminate\Support\Facades\Auth::user())}}"></developer-linkedin-search>
                     <x-filter-component :filterAttributes="$filterAttributes"/>
 
                 @if($developers->count())
@@ -147,6 +150,9 @@
 
     </section>
 @endsection
+@push('js')
 
+    <script src="/components/developer/linkedin-search.js"></script>
+@endpush
 
 
