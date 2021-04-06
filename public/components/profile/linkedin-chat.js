@@ -305,7 +305,7 @@ Vue.component('profile-linkedin-chat', {
         getParticipant(members) {
             let _this = this
             return members.filter(function (member) {
-                return member.entityUrn !== _this.user.linkedin_urn_id
+                return member &&  member.entityUrn !== _this.user.linkedin_entityUrn
             })
         },
         resendMessage: function (message) {

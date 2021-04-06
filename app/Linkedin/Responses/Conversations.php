@@ -2,6 +2,7 @@
 
 namespace App\Linkedin\Responses;
 
+use App\Linkedin\Constants;
 use App\Linkedin\DTO\Conversation as ConversationDTO;
 use App\Linkedin\Helper;
 use Carbon\Carbon;
@@ -56,6 +57,8 @@ class Conversations
             return !$conversation->groupChat;
         });
 
+//        File::put(storage_path('a.json'),json_encode($data));
+
 
         $profiles = $data[self::TYPE_MINI_PROFILE]->map(function ($profile) {
 
@@ -63,6 +66,7 @@ class Conversations
                 $profile->picture = $profile->picture->rootUrl . $profile->picture->artifacts[1]->fileIdentifyingUrlPathSegment;
             }
             $profile->entityUrn = explode(':', $profile->entityUrn)[3];
+            $profile->picture = $profile->picture??Constants::DEFAULT_AVATAR;
             return collect($profile)->only('firstName', 'lastName', 'picture', 'entityUrn', 'publicIdentifier')->toArray();
 
         });
@@ -84,6 +88,7 @@ class Conversations
                 return $profile['entityUrn'] === $this->user_entityUrn;
             });
 
+
             array_push($members,$user);
 
             $member = $profiles->first(function ($profile) use ($participant_urn) {
@@ -101,6 +106,7 @@ class Conversations
             }
 
         }
+
 
         return $array;
     }
