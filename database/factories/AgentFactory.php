@@ -36,3 +36,4 @@ class AgentFactory extends Factory
         ];
     }
 }
+

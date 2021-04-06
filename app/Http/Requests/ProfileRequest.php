@@ -29,8 +29,8 @@ class ProfileRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'avatar' => 'mimes:jpg,bmp,png|max:2048',
             'color' => 'required|string|max:255',
-            'linkedin_login' => 'sometimes|string|max:255',
-            'linkedin_password' => 'sometimes|string|max:255',
+//            'linkedin_login' => 'sometimes|string|max:255',
+//            'linkedin_password' => 'sometimes|string|max:255',
         ];
 
 
