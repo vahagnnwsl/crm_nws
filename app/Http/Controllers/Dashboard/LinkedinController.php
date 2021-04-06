@@ -68,7 +68,7 @@ class LinkedinController extends Controller
                 $data = [
                     'conversation_id' => $conversation->id,
                     'conversation_entityUrn' => $conversation->entityUrn,
-                    'user_entityUrn' => Auth::user()->linkedin_urn_id,
+                    'user_entityUrn' => Auth::user()->linkedin_entityUrn,
                     'text' => $request->get('text'),
                     'status' => $this->messageRepository::DRAFT_STATUS,
                     'event' => $this->messageRepository::NOT_RECEIVE_EVENT,
@@ -175,7 +175,7 @@ class LinkedinController extends Controller
 
             if ($response['success']) {
 
-                $this->conversationRepository->updateOrCreateCollection(Response::conversations($response, Auth::user()->linkedin_urn_id), Auth::id());
+                $this->conversationRepository->updateOrCreateCollection(Response::conversations($response, Auth::user()->linkedin_entityUrn), Auth::id());
                 $this->putFlashMessage(true, 'Successfully synced');
                 return response()->json([]);
             }
