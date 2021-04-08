@@ -95,24 +95,28 @@ class ProjectRepository extends Repository
     /**
      * @param array $requestData
      * @param int $project_id
+     * @return bool
      */
-    public function storePayment(array $requestData, int $project_id): void
+    public function storePayment(array $requestData, int $project_id): bool
     {
         if (isset($requestData['attachment'])) {
             $requestData['invoice'] = $this->base64Upload($requestData['attachment'], 'payments');
         }
 
         $project = $this->getById($project_id);
-        $rate = ProjectRate::where(['project_id' => $project_id, 'id' => $requestData['rate']])->first();
+
+        $rate = $project->rates()->where(['default' => 1])->first();
 
         if ($rate) {
 
             $requestData['currency'] = $rate->currency;
             $requestData['budget'] = $rate->budget;
-            $project->payments()->create(Arr::except($requestData, 'rate'));
+            $project->payments()->create($requestData);
 
+            return true;
         }
 
+        return false;
     }
 
     /**
@@ -137,9 +141,9 @@ class ProjectRepository extends Repository
      * @param $id
      * @param array $requestData
      * @param int $creator_id
-     * @return array
+     * @return bool
      */
-    public function storeRate($id, array $requestData, int $creator_id)
+    public function storeRate($id, array $requestData, int $creator_id): bool
     {
         $project = $this->getById($id);
 
@@ -151,7 +155,7 @@ class ProjectRepository extends Repository
 
         $project->rates()->create($requestData);
 
-        return $project->rates;
+        return true;
     }
 
 }

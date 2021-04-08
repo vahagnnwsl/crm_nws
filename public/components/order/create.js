@@ -27,9 +27,8 @@ Vue.component('order-create', {
                 </div>
 
                 <div class="form-group">
-                    <label for="developer_id">Developer * </label>
-                    <select class="form-control" id="developer_id" name="developer_id" v-model="form.developer_id"
-                            v-validate="'required'">
+                    <label for="developer_id">Developer </label>
+                    <select class="form-control" id="developer_id" name="developer_id" v-model="form.developer_id">
                         <option value="">Select one</option>
                         <option :value="developer.id" v-for="developer in developers">
                             {{ developer.first_name + ' ' + developer.last_name }}
@@ -37,43 +36,9 @@ Vue.component('order-create', {
                     </select>
                     <span class="error invalid-feedback d-block">{{ errors.first('developer_id') }}</span>
                 </div>
-                <div class="form-group">
-                    <div class="form-check-inline">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="optradio" @click="show('expert')"
-                                   :checked="showType==='expert'">Expert
-                        </label>
-                    </div>
-                    <div class="form-check-inline">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="optradio" @click="show('team_lid')"
-                                   :checked="showType==='team_lid'">Team lead
-                        </label>
-                    </div>
 
 
-                </div>
-                <div class="form-group" v-if="showType === 'expert'">
-                    <label for="expert_id">Expert </label>
-                    <select class="form-control" id="expert_id" name="expert_id" v-model="form.expert_id">
-                        <option value="">Select one</option>
-                        <option :value="developer.id" v-for="developer in developers">
-                            {{ developer.first_name + ' ' + developer.last_name }}
-                        </option>
-                    </select>
-                    <span class="error invalid-feedback d-block">{{ errors.first('expert_id') }}</span>
-                </div>
 
-                <div class="form-group" v-if="showType === 'team_lid'">
-                    <label for="team_lid_id">Team lid </label>
-                    <select class="form-control" id="team_lid_id" name="team_lid_id" v-model="form.team_lid_id">
-                        <option value="">Select one</option>
-                        <option :value="developer.id" v-for="developer in developers">
-                            {{ developer.first_name + ' ' + developer.last_name }}
-                        </option>
-                    </select>
-                    <span class="error invalid-feedback d-block">{{ errors.first('team_lid_id') }}</span>
-                </div>
 
                 <div class="form-group">
                     <label for="source">Source * </label>
@@ -157,8 +122,6 @@ Vue.component('order-create', {
                 name: '',
                 agent_id: '',
                 developer_id: '',
-                expert_id: '',
-                team_lid_id: '',
                 source: '',
                 link: '',
                 stacks: [],
@@ -166,7 +129,6 @@ Vue.component('order-create', {
                 budget: '',
                 currency: ''
             },
-            showType: 'expert'
         }
     },
     props: ['agents', 'developers', 'sources', 'stacks', 'currencies'],
@@ -202,11 +164,6 @@ Vue.component('order-create', {
                 }
 
             });
-        },
-        show: function (t) {
-            this.form.expert_id = '';
-            this.form.team_lid_id = '';
-            this.showType = t;
         }
     }
 })

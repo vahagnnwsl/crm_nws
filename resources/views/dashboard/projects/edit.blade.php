@@ -9,7 +9,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>Edit project
-                        <span class="text-purple">{{$project->name}}</span>
+                        <span class="text-blue">{{$project->name}}</span>
 
                         <a href="{{route('orders.edit', $project->order->id)}}"
                            target="_blank">Order: {{$project->order->hash}}</a>

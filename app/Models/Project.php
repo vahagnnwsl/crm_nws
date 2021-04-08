@@ -28,7 +28,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function creator()
+    public function creator(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class, 'id', 'creator_id');
     }
@@ -36,7 +36,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function agent()
+    public function agent(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Agent::class, 'id', 'agent_id');
     }
@@ -44,7 +44,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function expert()
+    public function expert(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Developer::class, 'id', 'expert_id');
     }
@@ -52,7 +52,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function developer()
+    public function developer(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Developer::class, 'id');
     }
@@ -60,7 +60,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function teamLead()
+    public function teamLead(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Developer::class, 'id', 'team_lid_id');
     }
@@ -68,7 +68,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function stacks()
+    public function stacks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Stack::class, 'project_stacks');
     }
@@ -76,7 +76,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function order()
+    public function order(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Order::class, 'id', 'order_id');
     }
@@ -84,7 +84,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function payments()
+    public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProjectPayment::class, 'project_id');
     }
@@ -92,7 +92,7 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rates()
+    public function rates(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProjectRate::class, 'project_id')->orderByDesc('created_at');
     }

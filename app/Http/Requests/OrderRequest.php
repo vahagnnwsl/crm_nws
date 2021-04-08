@@ -38,22 +38,22 @@ class OrderRequest extends FormRequest
             'budget' => 'required_with:currency|numeric|between:1,9000000|nullable',
             'description' => 'sometimes|string|nullable',
             'agent_id' => 'required|exists:App\Models\Agent,id',
-            'team_lid_id' => ['sometimes',
-                Rule::exists('developers', 'id')->where(function ($query) {
-                    $query->where([
-                        'id' => $this->get('team_lid_id'),
-                        'status' => DeveloperRepository::STATUS_ACCEPTED
-                    ]);
-                }), 'nullable'
-            ],
-            'developer_id' => ['sometimes',
-                Rule::exists('developers', 'id')->where(function ($query) {
-                    $query->where([
-                        'id' => $this->get('developer_id'),
-                        'status' => DeveloperRepository::STATUS_ACCEPTED
-                    ]);
-                }), 'nullable'
-            ],
+//            'team_lid_id' => ['sometimes',
+//                Rule::exists('developers', 'id')->where(function ($query) {
+//                    $query->where([
+//                        'id' => $this->get('team_lid_id'),
+//                        'status' => DeveloperRepository::STATUS_ACCEPTED
+//                    ]);
+//                }), 'nullable'
+//            ],
+//            'developer_id' => ['sometimes',
+//                Rule::exists('developers', 'id')->where(function ($query) {
+//                    $query->where([
+//                        'id' => $this->get('developer_id'),
+//                        'status' => DeveloperRepository::STATUS_ACCEPTED
+//                    ]);
+//                }), 'nullable'
+//            ],
             'expert_id' => ['sometimes',
                 Rule::exists('developers', 'id')->where(function ($query) {
                     $query->where([

@@ -15,7 +15,8 @@ class ProjectRate extends Model
         'budget',
         'date',
         'currency',
-        'default'
+        'default',
+        'pay_day'
     ];
 
     protected $casts = [

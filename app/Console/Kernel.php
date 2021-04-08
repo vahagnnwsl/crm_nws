@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\LinkedinApiLogin;
+use App\Console\Commands\LinkedinJson;
+use App\Console\Commands\LinkedinPuppeteerLogin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +16,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+
+        LinkedinApiLogin::class,
+        LinkedinPuppeteerLogin::class,
+        LinkedinJson::class,
     ];
 
     /**
@@ -24,7 +30,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('command:LinkedinApiLogin')->timezone('Asia/Yerevan')->at('16:35')->everySixHours();
+        $schedule->command('command:LinkedinPuppeteerLogin')->timezone('Asia/Yerevan')->at('16:35')->everySixHours();
+        $schedule->command('command:LinkedinJson')->timezone('Asia/Yerevan')->at('16:35')->everySixHours();
     }
 
     /**

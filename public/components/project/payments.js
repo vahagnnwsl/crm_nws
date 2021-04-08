@@ -1,60 +1,45 @@
 Vue.component('project-payments', {
     template: `
         <div class="row pl-2 pr-2">
-        <div class="card card-secondary w-100">
+        <div class="card card-secondary w-100  collapsed-card">
             <div class="card-header">
                 <h3 class="card-title">Payments</h3>
-            </div>
-            <div class="card-body  w-100">
-                <div class="card card-secondary w-100 collapsed-card">
-                    <div class="card-header">
-                        <button type="button" class="btn btn-tool float-right" data-card-widget="collapse"
-                                title="Collapse">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
 
-                    <div class="card-body" style="display: none">
-                        <form @submit.prevent="submit">
-                            <fieldset>
-                                <div class="form-group input-group-sm">
-                                    <label for="date">Date</label>
-                                    <input class="form-control" name="date" type="date" v-model="form.date">
-                                    <span class="error invalid-feedback d-block">{{ errors.first('date') }}</span>
-                                </div>
-
-                                <div class="form-group  input-group-sm">
-                                    <label for="date">Rate</label>
-
-                                    <select class="form-control" name="rate" v-model="form.rate">
-                                        <option :value="rate.id" v-for="rate in rates">{{rate.date}} / {{rate.currency}} / {{rate.budget}}</option>
-                                    </select>
-                                    <span class="error invalid-feedback d-block"
-                                          ref="attachment-error">{{ errors.first('rate') }}</span>
-                                </div>
-                                <div class="form-group  input-group-sm">
-                                    <label for="file">Attachment</label>
-                                    <input type="file" name="file" class="form-control"
-                                           style="padding-top: 3px!important;"
-                                           ref="attachment" v-on:change="handleFileUpload">
-                                    <span class="error invalid-feedback d-block"
-                                          ref="attachment-error">{{ errors.first('attachment') }}</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success float-right mb-2"><i
-                                        class="fa fa-check-circle"></i> Submit
-                                    </button>
-
-                                </div>
-                            </fieldset>
-                        </form>
-
-
-                    </div>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse" style="margin-top: -10px!important;">
+                        <i class="fas fa-plus"></i>
+                    </button>
                 </div>
             </div>
-            <div class="card-body  w-100">
+            <div class="card-body  w-100" style="display: none">
+                <form @submit.prevent="submit">
+                    <fieldset>
+                        <div class="form-group input-group-sm">
+                            <label for="date">Date</label>
+                            <input class="form-control" name="date" v-validate="'required'"  type="date" v-model="form.date">
+                            <span class="error invalid-feedback d-block">{{ errors.first('date') }}</span>
+                        </div>
+
+
+                        <div class="form-group  input-group-sm">
+                            <label for="file">Attachment</label>
+                            <input type="file" name="file" class="form-control"
+                                   style="padding-top: 3px!important;"
+                                   ref="attachment" v-on:change="handleFileUpload">
+                            <span class="error invalid-feedback d-block"
+                                  ref="attachment-error">{{ errors.first('attachment') }}</span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success float-right mb-2"><i
+                                class="fa fa-check-circle"></i> Submit
+                            </button>
+
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="form-group p-4 mt-2">
                 <table class="table table-striped projects" v-if="payments.length">
                     <thead>
                     <tr>
@@ -89,8 +74,7 @@ Vue.component('project-payments', {
             id: '',
             form: {
                 date: '',
-                attachment: '',
-                rate: '',
+                attachment: ''
             },
             rates: [],
             payments: []
@@ -111,10 +95,7 @@ Vue.component('project-payments', {
                 if (valid) {
                     this.$http.post(`/dashboard/projects/${this.id}/payment`, this.form)
                         .then(() => {
-                            this.getPayments();
-                            this.formClear();
-                            toastr.success('Successfully created');
-
+                            location.reload();
                         }).catch((error) => {
                         this.$setErrorsFromResponse(error.response.data);
                     })

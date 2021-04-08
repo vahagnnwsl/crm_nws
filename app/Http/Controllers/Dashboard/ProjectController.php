@@ -8,6 +8,7 @@ use App\Http\Repositories\DeveloperRepository;
 use App\Http\Repositories\ProjectRepository;
 use App\Http\Repositories\StackRepository;
 use App\Http\Requests\ProjectPaymentRequest;
+use App\Http\Requests\ProjectRateRequest;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectPaymentCollection;
 use Illuminate\Http\Request;
@@ -85,11 +86,11 @@ class ProjectController extends Controller
     }
 
     /**
-     * @param ProjectRequest $projectRequest
+     * @param ProjectRequest $request
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProjectRequest $request, int $id)
+    public function update(ProjectRequest $request, int $id): \Illuminate\Http\RedirectResponse
     {
         $this->projectRepository->update($request->validated(), $id);
         $this->projectRepository->setStacks($id, $request['stacks']);
@@ -105,10 +106,13 @@ class ProjectController extends Controller
      * @param int $project_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storePayment(ProjectPaymentRequest $request, int $project_id)
+    public function storePayment(ProjectPaymentRequest $request, int $project_id): \Illuminate\Http\JsonResponse
     {
-        $this->projectRepository->storePayment(array_merge($request->validated(), ['creator_id' => Auth::id()]), $project_id);
-        return response()->json([]);
+        $success = $this->projectRepository->storePayment(array_merge($request->validated(), ['creator_id' => Auth::id()]), $project_id);
+
+        $this->putFlashMessage($success);
+
+        return response()->json(['success' => $success]);
     }
 
 
@@ -116,7 +120,7 @@ class ProjectController extends Controller
      * @param int $id
      * @return ProjectPaymentCollection
      */
-    public function getPayments(int $id)
+    public function getPayments(int $id): ProjectPaymentCollection
     {
         return new ProjectPaymentCollection($this->projectRepository->getPayments($id));
     }
@@ -126,22 +130,24 @@ class ProjectController extends Controller
      * @param int $payment_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePayment(int $project_id, int $payment_id)
+    public function deletePayment(int $project_id, int $payment_id): \Illuminate\Http\JsonResponse
     {
         $this->projectRepository->deletePayment($project_id, $payment_id);
         return response()->json([]);
     }
 
     /**
-     * @param Request $request
+     * @param ProjectRateRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeRate(Request $request, $id)
+    public function storeRate(ProjectRateRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-        $this->putFlashMessage(true,'Success');
+        $success = $this->projectRepository->storeRate($id, $request->validated(), Auth::id());
 
-        return response()->json(['rates' => $this->projectRepository->storeRate($id, $request->get('rates'),Auth::id())]);
+        $this->putFlashMessage($success);
+
+        return response()->json(['success' => $success]);
     }
 
 

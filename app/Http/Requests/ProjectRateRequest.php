@@ -7,10 +7,8 @@ use App\Http\Repositories\StackRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProjectPaymentRequest extends FormRequest
+class ProjectRateRequest extends FormRequest
 {
-    protected $errorBag = 'projectPaymentForm';
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,7 +30,9 @@ class ProjectPaymentRequest extends FormRequest
 
         return [
             'date' => 'required|date_format:Y-m-d',
-            'attachment' => 'sometimes|base64image|nullable'
+            'pay_day' => 'required|numeric|min:1|max:31',
+            'currency' => 'required',
+            'budget' => 'required'
         ];
 
 
