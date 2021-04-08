@@ -212,6 +212,8 @@ Vue.component('profile-linkedin-chat', {
                 _this.audio();
             }
 
+            console.log(data,1)
+
         });
 
     },
